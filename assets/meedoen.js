@@ -21,13 +21,20 @@ function verstuur(data){
 function toonVraag(v){
   huidig=v; var q=el("vraagTekst"), inv=el("vraagInvoer"); inv.textContent="";
   el("vraagMsg").textContent="";
-  el("vraagLabel").textContent=v.open?"Vraag":"Gesloten";
+  el("vraagLabel").textContent=v.open?(v.soort==="aanwezig"?"Koppelen":"Vraag"):"Gesloten";
   q.textContent=v.vraag||"";
   el("vraagHint").textContent=v.hint||"";
   var st=verstuurd[v.id]||(verstuurd[v.id]={n:0,w:null});
   if(!v.open){el("vraagMsg").textContent="Deze vraag is gesloten. Wacht op de volgende."; toon("vraagKaart"); return;}
 
-  if(v.soort==="schaal"||v.soort==="keuze"){
+  if(v.soort==="aanwezig"){
+    var gb=maak("button","btn md-groot",st.w===1?"Je bent gekoppeld ✓":"Ik ben er"); gb.type="button";
+    gb.addEventListener("click",function(){
+      if(!huidig||!huidig.open)return;
+      if(verstuur({id:v.id,w:1})){st.w=1; gb.textContent="Je bent gekoppeld ✓"; el("vraagMsg").textContent="Gelukt. Laat deze pagina open. De vragen verschijnen vanzelf.";}
+    });
+    inv.appendChild(gb);
+  }else if(v.soort==="schaal"||v.soort==="keuze"){
     var opties=v.soort==="schaal"?[1,2,3,4,5].map(String):v.opties;
     var lijst=maak("div","md-opties"+(v.soort==="schaal"?" md-schaal":""));
     opties.forEach(function(t,i){
@@ -63,17 +70,25 @@ function toonVraag(v){
   toon("vraagKaart");
 }
 
+var wake=null;
+function houdAan(){
+  try{if(navigator.wakeLock&&document.visibilityState==="visible"){navigator.wakeLock.request("screen").then(function(w){wake=w;},function(){});}}catch(e){}
+}
+document.addEventListener("visibilitychange",function(){if(document.visibilityState==="visible"&&sessie)houdAan();});
+
 function start(code){
+  houdAan();
   status("Verbinden…","We zoeken het scherm van de gespreksleider.",false);
   clearTimeout(hulpTimer); hulpTimer=setTimeout(function(){if(sessie&&!sessie.heeftHost()){el("statusHulp").classList.remove("hide");}},9000);
   try{
     sessie=startDeelnemer(code,{
       host:function(){status("Verbonden","Wacht tot de gespreksleider een vraag opent.",false);},
       vraag:function(v){
+        if(!v.open&&v.soort==="aanwezig"){huidig=null; status("Gekoppeld ✓","Laat deze pagina open. De vragen verschijnen vanzelf.",false); return;}
         if(v.geen||(!v.open&&!v.vraag)){huidig=null; status("Verbonden","Wacht tot de gespreksleider een vraag opent.",false); return;}
         toonVraag(v);
       },
-      ok:function(d){if(d&&d.ok&&huidig&&huidig.id===d.id&&huidig.soort!=="tekst"){el("vraagMsg").textContent="Ontvangen. Je kunt je antwoord nog aanpassen.";}},
+      ok:function(d){if(d&&d.ok&&huidig&&huidig.id===d.id&&huidig.soort!=="tekst"&&huidig.soort!=="aanwezig"){el("vraagMsg").textContent="Ontvangen. Je kunt je antwoord nog aanpassen.";}},
       hostWeg:function(){huidig=null; status("Verbinding weg","De verbinding met de gespreksleider is weg. Wacht even, of laad deze pagina opnieuw.",true);},
       peers:function(){}
     });

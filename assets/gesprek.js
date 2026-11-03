@@ -150,6 +150,12 @@ BOUW.agenda=function(s,inh){
   inh.appendChild(mk("p","instructie","Je hebt nodig:"));
   inh.appendChild(punten(G.gesprekken[s.g].bij));
 };
+BOUW.koppelen=function(s,inh){
+  kopblok(s,inh);
+  inh.appendChild(qrBlok());
+  inh.appendChild(punten(s.stappen));
+  if(s.hulp)inh.appendChild(mk("p","hulp-kader",s.hulp));
+};
 BOUW.uitleg=function(s,inh){
   kopblok(s,inh);
   (s.alinea||[]).forEach(function(t){inh.appendChild(mk("p","alinea",t));});
@@ -387,7 +393,6 @@ function liveSlide(s,i,inh){
   var vorige=L.actief;
   if(vorige!==null&&vorige!==i&&L.v[vorige])L.v[vorige].open=false;
   L.kader=null;
-  if(s.t==="titel")inh.appendChild(qrBlok());
   if(!s.live){L.actief=null; L.host.stuurVraag({id:null,geen:true,open:false}); return;}
   var q=L.v[i]||(L.v[i]={open:true,antw:{},pas:{},tel:{}}); q.open=true; L.actief=i;
   sendQ(i);
@@ -402,6 +407,7 @@ function liveAntwoord(peer,d){
   var l=s.live;
   q.tel[peer]=(q.tel[peer]||0)+1; if(q.tel[peer]>30)return;
   if(d.pas===true){q.pas[peer]=true;}
+  else if(l.soort==="aanwezig"){if(d.w===1)q.antw[peer]=1; else return;}
   else if(l.soort==="schaal"){if(Number.isInteger(d.w)&&d.w>=1&&d.w<=5)q.antw[peer]=d.w; else return;}
   else if(l.soort==="keuze"){if(Number.isInteger(d.w)&&d.w>=0&&d.w<l.opties.length)q.antw[peer]=d.w; else return;}
   else{
@@ -434,7 +440,13 @@ function liveVernieuw(){
     });
     return w;
   }
-  if(l.soort==="schaal"){
+  if(l.soort==="aanwezig"){
+    var klaar=Object.keys(q.antw).length, allemaal=L.peers>0&&klaar>=L.peers;
+    var gr=mk("div","live-aanwezig"+(allemaal?" allemaal":""));
+    gr.appendChild(mk("p","live-groot",allemaal?"Iedereen is gekoppeld ✓ ("+klaar+")":klaar+" van "+L.peers+" telefoons gekoppeld"));
+    var bl=mk("span","live-balk"), vl=mk("span","live-vul"); vl.style.width=(L.peers?Math.min(100,klaar/L.peers*100):0)+"%"; bl.appendChild(vl); gr.appendChild(bl);
+    k.appendChild(gr);
+  }else if(l.soort==="schaal"){
     var t=[0,0,0,0,0]; Object.keys(q.antw).forEach(function(p){t[q.antw[p]-1]++;});
     var namen=["1 · "+l.labels[0],"2","3","4","5 · "+l.labels[1]];
     k.appendChild(balken(namen,t));
@@ -500,8 +512,8 @@ function ga(i){
   st.slides.forEach(function(_,k){prog.appendChild(mk("span","seg"+(k<i?" klaar":(k===i?" nu":""))));});
   el("dVorige").disabled=i===0;
   el("dVolgende").disabled=i===st.slides.length-1;
-  el("dVolgende").textContent=i===0?"Start →":"Volgende →";
-  try{window.history.replaceState(null,"",window.location.pathname+"#g="+st.g+"&s="+i);}catch(e){}
+  el("dVolgende").textContent=s.t==="koppelen"?"Begin het gesprek →":(i===0?"Start →":"Volgende →");
+  try{window.history.replaceState(null,"",window.location.pathname+"#g="+st.g+"&s="+Math.max(0,i-(st.live&&st.live.aan?1:0)));}catch(e){}
   el("deck").querySelector(".deck-main").scrollTop=0;
   pasOp();
   if(st.paneel)paneelVul(st.paneel);
@@ -545,7 +557,7 @@ function paneelToon(soort){
 }
 
 function openDeck(k,i,herstel){
-  st.g=k; st.slides=G.gesprekken[k].slides; st.start=Date.now(); st.paneel=null; el("paneel").classList.add("hide");
+  st.g=k; st.slides=(st.live&&st.live.aan?[G.koppel]:[]).concat(G.gesprekken[k].slides); st.start=Date.now(); st.paneel=null; el("paneel").classList.add("hide");
   el("deck").classList.remove("hide"); document.body.classList.add("deck-open");
   if(!herstel){schermAan();}
   try{if(navigator.wakeLock){navigator.wakeLock.request("screen").then(function(w){st.wake=w;},function(){});}}catch(e){}
@@ -591,8 +603,14 @@ function rust(){
 /* ---------- Schermvullend schalen ---------- */
 // Zoekt per scherm de grootste lettergrootte (--fs) waarbij alles zonder scrollen past.
 var fitGepland=false;
+function zetHoogte(){
+  // Op iPad en telefoon is het zichtbare deel kleiner dan 100vh. Gebruik de echte hoogte.
+  var deck=el("deck"), vv=window.visualViewport, h=vv?vv.height:window.innerHeight;
+  if(h>100)deck.style.height=Math.round(h)+"px";
+}
 function pasOp(){
   var deck=el("deck"); if(deck.classList.contains("hide"))return;
+  zetHoogte();
   var main=deck.querySelector(".deck-main"), slide=el("slide"), cs=window.getComputedStyle(main);
   var W=main.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight);
   var H=main.clientHeight-parseFloat(cs.paddingTop)-parseFloat(cs.paddingBottom);
@@ -603,12 +621,21 @@ function pasOp(){
   var staand=deck.classList.contains("portret");
   var lo=9, hi=Math.min(staand?W/14:W/34,H/11,52);
   main.classList.remove("scrolt");
-  if(past(hi))return;
+  if(past(hi)){controleerPast(deck,main);return;}
   if(!past(lo)){main.classList.add("scrolt"); return;} // past echt niet: dan mag het scherm scrollen
   for(var n=0;n<9&&hi-lo>0.4;n++){var mid=(lo+hi)/2; if(past(mid))lo=mid; else hi=mid;}
   // kleine schommelingen negeren, zodat de tekst niet telkens verspringt
   if(vorige&&vorige>=lo*0.94&&vorige<=lo*1.06&&past(vorige))return;
   deck.style.setProperty("--fs",lo+"px");
+  controleerPast(deck,main);
+}
+// Laatste controle op wat de browser echt laat zien: past het niet, dan verkleinen we nog wat.
+function controleerPast(deck,main){
+  var fs=parseFloat(deck.style.getPropertyValue("--fs"))||24, n=0;
+  while(n++<16&&fs>9&&(main.scrollHeight>main.clientHeight+1||main.scrollWidth>main.clientWidth+1)){
+    fs=Math.max(9,fs*0.95); deck.style.setProperty("--fs",fs+"px");
+  }
+  main.classList.toggle("scrolt",main.scrollHeight>main.clientHeight+1);
 }
 function planFit(){
   if(fitGepland)return; fitGepland=true;
@@ -621,6 +648,8 @@ if(window.MutationObserver){
   }).observe(el("slide"),{childList:true,subtree:true,characterData:true});
 }
 window.addEventListener("resize",planFit);
+window.addEventListener("orientationchange",function(){setTimeout(planFit,200);});
+if(window.visualViewport){window.visualViewport.addEventListener("resize",planFit);}
 document.addEventListener("fullscreenchange",planFit);
 if(document.fonts&&document.fonts.ready){document.fonts.ready.then(planFit);}
 

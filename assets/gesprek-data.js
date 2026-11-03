@@ -235,7 +235,16 @@ var COMBI=[
   einde()
 ]);
 
+var KOPPEL={t:"koppelen",kop:"Koppel je telefoon",
+  intro:"Doe dit nu, dan hoeft het straks niet meer tijdens het gesprek.",
+  waarom:"Zo weten we dat iedereen kan meedoen voordat we beginnen.",
+  stappen:["Scan de QR-code met de camera van je telefoon.","Tik op ‘Ik ben er’.","Laat je telefoon aan en de pagina open. De vragen verschijnen vanzelf."],
+  hulp:"Lukt het niet? Ga naar de website op het scherm en typ de code. Geen verbinding? Probeer mobiel internet. Of doe straks op papier mee.",
+  live:{soort:"aanwezig",vraag:"Tik op de knop zodat we weten dat het werkt"},
+  tip:"Wacht tot iedereen gekoppeld is, of tot het niet meer lukt. Wie niet kan koppelen, kan op papier meedoen. Klik daarna op Begin het gesprek."};
+
 window.GESPREK={
+  koppel:KOPPEL,
   volgorde:["talenten","kwadranten","combi"],
   regels:REGELS, kort:KORT,
   gesprekken:{

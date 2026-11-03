@@ -69,3 +69,7 @@ Lokaal bekijken: `python -m http.server 8765` in deze map en open `http://localh
 ## Schermen die altijd passen
 - In de gespreksleider (`gesprek.css`, `gesprek.js`) zijn alle maten in `em`. Per scherm zoekt `pasOp()` de grootste lettergrootte (`--fs`) waarbij alles zonder scrollen past, bij elke resolutie en beeldverhouding. Dat gebeurt opnieuw bij een andere schermgrootte en als de inhoud verandert (live antwoorden, fases, vragen).
 - Getest op 800x600, 1024x768, 1280x720, 1366x768, 1920x1080, 2560x1080, 3840x2160, 768x1024 (staand) en 390x844 (telefoon): alle schermen van de drie gesprekken pasten zonder scrollen. Op 800x600 en op een telefoon wordt de tekst op de drukste schermen klein (rond 10 px). Alleen als het echt niet past, mag het scherm scrollen.
+
+## Koppelscherm en iPad
+- Met live meedoen aan begint het gesprek met een koppelscherm: QR-code, code en een teller. Iedereen scant en tikt op 'Ik ben er'. Het scherm toont hoeveel telefoons gekoppeld zijn. Daarna begint het gesprek met 'Begin het gesprek'. De telefoonpagina probeert het scherm aan te houden.
+- De gespreksleider meet de echte zichtbare hoogte (visualViewport) in plaats van 100vh, omdat op iPad en telefoon de werkbalken van de browser een deel van het scherm innemen. Na het schalen controleert `controleerPast()` altijd nog of er echt niets wegvalt en verkleint zo nodig verder.

@@ -256,3 +256,5 @@ body.meedoen{background:var(--blue-pale)}
 .md-labels{display:flex;justify-content:space-between;gap:10px;font-size:.85rem;color:var(--muted)}
 .md-tekst{width:100%;font:inherit;font-size:1.1rem;padding:12px 14px;border:3px solid var(--ink);border-radius:14px;margin:8px 0;resize:vertical}
 .md-voet{margin-top:20px}
+
+.md-groot{width:100%;font-size:1.5rem;min-height:84px;margin:12px 0}
