@@ -120,7 +120,8 @@
 .paneel .qr-blok{margin:.4em 0}
 
 /* Live: QR-code en antwoorden */
-#deckLive{font-size:.9em;font-weight:700}
+#deckLive{display:inline-flex;gap:.4em;align-items:center;font-size:.95em;font-weight:800;background:var(--yellow);border:2px solid var(--ink);border-radius:999px;padding:.05rem .7rem}
+#deckLive:empty{display:none}
 .qr-blok{display:flex;gap:1em;align-items:center;flex-wrap:wrap;background:var(--white);border:.1em solid var(--ink);border-radius:.8em;padding:.7em .9em;box-shadow:.2em .2em 0 var(--ink);margin:.7em 0;max-width:max-content}
 .qr-svg{width:7em;height:auto;display:block;border:.1em solid var(--ink);border-radius:.4em;background:#fff;flex:none}
 .paneel .qr-svg{width:min(14em,40vw)}
@@ -149,3 +150,8 @@
 .live-aanwezig{margin:.2em 0}
 .live-groot{font-size:1.5em;font-weight:800;margin:.1em 0 .3em}
 .live-aanwezig.allemaal .live-vul{background:var(--yellow)}
+
+/* Telefoonicoon */
+.tel-ico{width:1.1em;height:1.1em;flex:none;vertical-align:-.2em}
+.slide .tel-badge{display:inline-flex;gap:.4em;align-items:center;background:var(--yellow);border:.1em solid var(--ink);border-radius:1em;padding:.1em .7em;font-size:.65em;font-weight:800;margin:.1em 0 .5em}
+.live-kop strong{display:inline-flex;align-items:center;gap:.3em}

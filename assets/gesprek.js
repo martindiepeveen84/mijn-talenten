@@ -354,6 +354,23 @@ function qrBlok(){
   liveTelTekst();
   return b;
 }
+function telIcoon(){
+  var NS="http://www.w3.org/2000/svg", svg=document.createElementNS(NS,"svg");
+  svg.setAttribute("viewBox","0 0 24 24"); svg.setAttribute("class","tel-ico"); svg.setAttribute("aria-hidden","true");
+  var r=document.createElementNS(NS,"rect");
+  r.setAttribute("x","6.5"); r.setAttribute("y","2"); r.setAttribute("width","11"); r.setAttribute("height","20"); r.setAttribute("rx","2.4");
+  r.setAttribute("fill","none"); r.setAttribute("stroke","currentColor"); r.setAttribute("stroke-width","2");
+  var c=document.createElementNS(NS,"circle"); c.setAttribute("cx","12"); c.setAttribute("cy","18.4"); c.setAttribute("r","1.15"); c.setAttribute("fill","currentColor");
+  svg.appendChild(r); svg.appendChild(c); return svg;
+}
+// Het aantal deelnemers staat altijd in de bovenbalk, ook bij 0
+function topLive(){
+  var d=el("deckLive"); if(!d)return;
+  d.textContent="";
+  if(!st.live||!st.live.aan)return;
+  d.appendChild(telIcoon());
+  d.appendChild(mk("span",null,liveTelTekst()+" · code "+st.live.code));
+}
 function liveTelTekst(){
   var n=st.live.peers, tekst=n===0?"Nog niemand verbonden":(n===1?"1 telefoon verbonden":n+" telefoons verbonden");
   document.querySelectorAll("[data-live-tel]").forEach(function(e){e.textContent=tekst;});
@@ -361,7 +378,7 @@ function liveTelTekst(){
 }
 function liveTelUpdate(){
   if(!st.live.aan)return;
-  el("deckLive").textContent="Live: "+liveTelTekst()+" · code "+st.live.code;
+  topLive();
   liveVernieuw();
 }
 function startLive(){
@@ -373,6 +390,7 @@ function startLive(){
     st.live={aan:true,code:code,host:null,peers:0,v:{},actief:null,kader:null};
     st.live.host=window.LIVE.startHost(code,{peers:function(n){st.live.peers=n; liveTelUpdate();},antwoord:liveAntwoord});
     el("dMeedoen").classList.remove("hide");
+    topLive();
     return true;
   }catch(e){
     st.live={aan:false}; melding.textContent="Live meedoen lukt niet in deze browser. Het gesprek werkt ook zonder."; return false;
@@ -382,7 +400,7 @@ function stopLive(){
   if(!st.live||!st.live.aan)return;
   var h=st.live.host;
   try{h.stuurVraag({id:null,geen:true,open:false}); setTimeout(function(){try{h.stop();}catch(e){}},400);}catch(e){}
-  st.live={aan:false}; el("dMeedoen").classList.add("hide"); el("deckLive").textContent="";
+  st.live={aan:false}; el("dMeedoen").classList.add("hide"); topLive();
 }
 function sendQ(i){
   var l=st.slides[i].live, q=st.live.v[i];
@@ -393,6 +411,12 @@ function liveSlide(s,i,inh){
   var vorige=L.actief;
   if(vorige!==null&&vorige!==i&&L.v[vorige])L.v[vorige].open=false;
   L.kader=null;
+  if(s.live){
+    var kopEl=inh.querySelector("h1"), badge=mk("p","tel-badge");
+    badge.appendChild(telIcoon());
+    badge.appendChild(document.createTextNode(s.t==="koppelen"?"Koppel je telefoon":"Antwoord op je telefoon"));
+    if(kopEl&&kopEl.nextSibling){inh.insertBefore(badge,kopEl.nextSibling);}else{inh.appendChild(badge);}
+  }
   if(!s.live){L.actief=null; L.host.stuurVraag({id:null,geen:true,open:false}); return;}
   var q=L.v[i]||(L.v[i]={open:true,antw:{},pas:{},tel:{}}); q.open=true; L.actief=i;
   sendQ(i);
@@ -424,7 +448,7 @@ function liveVernieuw(){
   var reageerders={}; Object.keys(q.antw).forEach(function(p){reageerders[p]=1;}); Object.keys(q.pas).forEach(function(p){reageerders[p]=1;});
   var aantal=Object.keys(reageerders).length;
   var kop=mk("div","live-kop");
-  kop.appendChild(mk("strong",null,"Live op telefoons"));
+  var kopTitel=mk("strong"); kopTitel.appendChild(telIcoon()); kopTitel.appendChild(document.createTextNode(" Live op telefoons")); kop.appendChild(kopTitel);
   kop.appendChild(mk("span","live-tel",aantal+" van "+L.peers+" hebben gereageerd"));
   var wissel=mk("button","btn btn-white btn-small",q.open?"Sluit antwoorden":"Open antwoorden"); wissel.type="button";
   wissel.addEventListener("click",function(){q.open=!q.open; sendQ(i); liveVernieuw();});
