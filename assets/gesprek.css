@@ -1,0 +1,145 @@
+/* Teamgesprek: de gespreksleider (schermvullend).
+   Alle maten in het scherm staan in em. gesprek.js zet --fs op #deck zo groot dat elk scherm
+   net zonder scrollen past, bij elke resolutie en elke beeldverhouding. */
+.deck{--fs:24px;position:fixed;inset:0;z-index:300;background:var(--blue-pale);display:flex;flex-direction:column;color:var(--ink);overflow:hidden}
+.deck.idle{cursor:none}
+.deck-top{flex:none;display:flex;justify-content:space-between;align-items:center;gap:.3rem 1rem;flex-wrap:wrap;padding:.35rem 1rem;background:var(--blue);border-bottom:5px solid var(--yellow);font-weight:800;font-size:.9rem}
+.deck-prog{flex:none;display:flex;gap:4px;padding:8px 1rem 0}
+.deck-prog .seg{flex:1;height:7px;border-radius:4px;background:var(--line)}
+.deck-prog .seg.klaar{background:var(--ink)}
+.deck-prog .seg.nu{background:var(--yellow);box-shadow:0 0 0 2px var(--ink)}
+.deck-main{flex:1;min-height:0;overflow:hidden;padding:.7rem 1.2rem;display:flex}
+.deck-main.scrolt{overflow:auto}
+.deck-controls{flex:none;display:flex;gap:.5rem;flex-wrap:wrap;justify-content:center;padding:.5rem 1rem;background:var(--white);border-top:3px solid var(--ink);transition:opacity .4s}
+.deck.idle .deck-controls{opacity:0;pointer-events:none}
+.deck-controls .btn{min-height:0;padding:.4rem .8rem;font-size:.85rem;box-shadow:0 3px 0 var(--ink)}
+.deck-controls .btn[disabled]{opacity:.4;cursor:default;transform:none}
+
+/* Het scherm zelf */
+.slide{font-size:var(--fs);line-height:1.3;margin:auto;width:100%;display:grid;grid-template-columns:minmax(0,1fr);gap:1.1em;align-items:start}
+.slide.heeft-timer{grid-template-columns:minmax(0,1fr) 10.5em}
+.deck.portret .slide.heeft-timer{grid-template-columns:minmax(0,1fr)}
+.slide-inhoud{min-width:0}
+.slide h1{font-size:2.1em;line-height:1.08;margin:0 0 .3em;letter-spacing:-.02em}
+.slide h2{font-size:1.2em;margin:.8em 0 .2em}
+.slide h3{font-size:1.1em;margin:0 0 .25em;line-height:1.2}
+.slide p{margin:.3em 0}
+.slide ul,.slide ol{font-size:1.02em;line-height:1.28;padding-left:1.1em;margin:.3em 0}
+.slide li{margin:.3em 0}
+.slide .instructie{font-size:1.18em;font-weight:600;margin:.1em 0 .45em}
+.slide .alinea{font-size:1.05em;margin:.45em 0}
+.slide .waarom{font-size:.72em;color:var(--muted);margin:.1em 0 .7em}
+.slide .waarom strong{color:var(--ink)}
+.slide .vb{font-size:.9em;background:var(--white);border-left:.4em solid var(--yellow);padding:.45em .8em;border-radius:.4em;margin:.6em 0}
+.slide .small{font-size:.62em;color:var(--muted)}
+.slide .hierna{margin-top:.9em;font-size:.62em;font-weight:700;color:var(--blue-deep);border-top:.12em dashed var(--line);padding-top:.5em}
+.slide .hulp{font-size:.75em;color:var(--muted)}
+.slide .msg{font-size:.7em;min-height:0}
+.slide .btn-row{display:flex;flex-wrap:wrap;gap:.5em;margin:.6em 0;align-items:center}
+.slide .btn{font-size:.62em;min-height:0;padding:.45em 1em;border:.12em solid var(--ink);border-radius:.6em;box-shadow:0 .15em 0 var(--ink)}
+.slide .btn:hover{transform:translateY(.08em);box-shadow:0 .07em 0 var(--ink)}
+
+/* Titel en einde */
+.slide .titel-kop{font-size:3em}
+.slide .titel-sub{font-size:1.5em;margin:.2em 0 .5em}
+.slide .titel-duur{font-size:.78em;font-weight:700;background:var(--yellow);display:inline-block;padding:.15em .7em;border-radius:.5em;border:.1em solid var(--ink)}
+.slide .vraag-groot{background:var(--yellow);border:.1em solid var(--ink);border-radius:.6em;padding:.55em .8em;font-size:1.5em;font-weight:800;line-height:1.2;box-shadow:.18em .18em 0 var(--ink);margin:.4em 0}
+.slide .vraag-groot p{margin:.2em 0}
+.slide .afspraak-recap{font-size:1.05em;font-weight:700}
+.slide .wat-nu{font-size:1.15em;margin:.7em 0 .1em}
+
+/* Timer */
+.timer-box{background:var(--white);border:.1em solid var(--ink);border-radius:.7em;padding:.6em .5em;text-align:center;box-shadow:.18em .18em 0 var(--ink)}
+.timer-label{margin:0 0 .15em;font-weight:700;font-size:.6em}
+.timer-box .tijd{font-size:2.8em;font-weight:800;font-variant-numeric:tabular-nums;line-height:1}
+.timer-knoppen{justify-content:center}
+.timer-box.laatste{background:var(--yellow)}
+.timer-box.tijd-om{background:var(--ink);color:var(--yellow)}
+.timer-box.tijd-om .btn{color:var(--ink)}
+.slide-zij .small{text-align:center;margin-top:.4em}
+
+/* Rondje, vragen, fases */
+.zinnen{display:grid;gap:.5em;grid-template-columns:repeat(auto-fit,minmax(9em,1fr));margin:.5em 0}
+.zin-kaart{background:var(--yellow);border:.1em solid var(--ink);border-radius:.6em;padding:.6em .8em;font-size:1.05em;font-weight:800;line-height:1.2;box-shadow:.15em .15em 0 var(--ink)}
+.stippen{font-weight:700;font-size:.62em}
+.fase-kaart{background:var(--white);border:.1em solid var(--ink);border-radius:.7em;padding:.7em .9em;margin:.5em 0;box-shadow:.15em .15em 0 var(--ink)}
+.fase-dots{display:flex;gap:.35em;margin-bottom:.3em}
+.fase-dots .dot{width:.55em;height:.55em;border-radius:50%;border:.1em solid var(--ink);background:var(--white)}
+.fase-dots .dot.klaar{background:var(--ink)}
+.fase-dots .dot.nu{background:var(--yellow)}
+.fase-wie{font-size:1.4em;font-weight:800;margin:.05em 0;line-height:1.15}
+.fase-tekst{font-size:1.05em;margin:.2em 0 .4em}
+.hierna-fase{font-weight:700;color:var(--blue-deep);font-size:.62em}
+.hulp-kader{background:var(--white);border:.1em dashed var(--ink);border-radius:.6em;padding:.45em .8em;font-size:.8em;margin-top:.6em}
+.rollen,.kolommen{display:grid;grid-template-columns:repeat(auto-fit,minmax(11em,1fr));gap:.6em;margin:.5em 0}
+.rol,.kolom{padding:.6em .8em}
+.rol h3,.kolom h3{font-size:1.1em;margin:0 0 .2em}
+.rol p{font-size:.95em;margin:.2em 0}
+.kolom ul{font-size:.92em}
+
+/* Bord met de vijf kenmerken */
+.bord{display:grid;grid-template-columns:repeat(auto-fit,minmax(10em,1fr));gap:.5em;margin:.5em 0}
+.bord-kaart{background:var(--white);border:.08em solid var(--ink);border-radius:.6em;padding:.5em .7em}
+.bord-kaart h3{margin:0;font-size:.95em}
+.polen-klein{font-size:.62em;color:var(--muted);margin:.15em 0 .3em}
+.bord-vraag{font-size:.75em;font-weight:600;margin:.15em 0}
+.bord-kies .bord-kaart ul{font-size:.7em}
+
+/* Uitleg: kernkwadrant, agenda, bijdragen */
+.slide .kw-grid{display:grid;grid-template-columns:1fr 1fr;gap:.4em}
+.slide .kw-box{border:.08em solid var(--ink);border-radius:.6em;padding:.45em .7em;display:flex;flex-direction:column;gap:.1em}
+.slide .kw-box b{font-size:.58em;letter-spacing:.06em;text-transform:uppercase}
+.slide .kw-box span{font-size:.95em;font-weight:700}
+.slide .kw-box small{font-size:.62em}
+.slide .kw-groot .kw-box span{font-size:1.05em}
+.kw-bouw .uitleg-nu{font-size:1.05em;font-weight:600;margin:.5em 0}
+.kw-box.verborgen-vak{opacity:.35;background:var(--white)}
+.kw-box.nieuw-vak{box-shadow:0 0 0 .12em var(--yellow),0 0 0 .2em var(--ink)}
+.agenda{list-style:none;padding:0;margin:.4em 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(15em,1fr));gap:.1em .6em}
+.agenda li{display:flex;justify-content:space-between;gap:1em;align-items:baseline;background:var(--white);border:.08em solid var(--ink);border-radius:.5em;padding:.25em .8em;margin:.3em 0;font-size:1em;font-weight:700}
+.bijdragen{margin:.7em 0}
+.bijdragen-kop{font-weight:800;margin:0 0 .2em;font-size:.8em}
+.bijdragen-rij{display:flex;flex-wrap:wrap;gap:.35em}
+.bijdrage{background:var(--white);border:.1em solid var(--ink);border-radius:1em;padding:.1em .7em;font-weight:700;font-size:.7em}
+.slide .time{font-size:.7em}
+
+/* Afspraken */
+.afspraak-tekst{width:100%;font:inherit;font-size:.9em;padding:.45em .7em;border:.1em solid var(--ink);border-radius:.6em;background:var(--white);color:var(--ink);resize:none}
+.vb-chips{display:flex;flex-wrap:wrap;gap:.4em;margin:.5em 0;align-items:center}
+.vb-chips .btn{text-align:left;font-weight:600}
+.vb-chips p{flex-basis:100%;margin:0}
+
+/* Panelen (tips, spelregels, naslag, meedoen) */
+.paneel{position:absolute;left:1rem;right:1rem;bottom:4.2rem;max-height:62%;overflow:auto;background:var(--white);border:3px solid var(--ink);border-radius:16px;padding:.8rem 1.1rem;box-shadow:6px 6px 0 var(--ink);font-size:max(14px,calc(var(--fs) * .55));z-index:5;line-height:1.3}
+.paneel ul{font-size:1em;padding-left:1.1em;margin:.3em 0}
+.paneel-kop{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:.3em}
+.paneel-sub{font-weight:800;margin:.7em 0 .2em}
+.paneel .faq{display:flex;flex-direction:column;margin:.4em 0}
+.paneel .bord{grid-template-columns:repeat(auto-fit,minmax(9em,1fr))}
+.paneel .bord-kaart h3{font-size:1em}
+.paneel .qr-blok{margin:.4em 0}
+
+/* Live: QR-code en antwoorden */
+#deckLive{font-size:.9em;font-weight:700}
+.qr-blok{display:flex;gap:1em;align-items:center;flex-wrap:wrap;background:var(--white);border:.1em solid var(--ink);border-radius:.8em;padding:.7em .9em;box-shadow:.2em .2em 0 var(--ink);margin:.7em 0;max-width:max-content}
+.qr-svg{width:7em;height:auto;display:block;border:.1em solid var(--ink);border-radius:.4em;background:#fff;flex:none}
+.paneel .qr-svg{width:min(14em,40vw)}
+.qr-tekst{max-width:20em}
+.qr-kop{font-size:1.15em;font-weight:800;margin:0 0 .2em}
+.qr-code{font-family:ui-monospace,Consolas,monospace;font-weight:800;font-size:1.5em;letter-spacing:.12em;background:var(--yellow);border:.08em solid var(--ink);border-radius:.4em;display:inline-block;padding:0 .5em;margin:.15em 0}
+.qr-url{word-break:break-all}
+.qr-tel{font-weight:800;color:var(--blue-deep);font-size:.8em}
+.live-kader{background:var(--blue-soft);border:.1em solid var(--ink);border-radius:.6em;padding:.5em .8em;margin:.8em 0}
+.live-kop{display:flex;flex-wrap:wrap;gap:.3em 1em;align-items:center;justify-content:space-between;font-size:.72em}
+.live-tel{color:var(--muted);font-weight:700}
+.live-vraag{font-size:.95em;font-weight:800;margin:.3em 0 .4em}
+.live-balken{display:grid;gap:.3em}
+.live-rij{display:grid;grid-template-columns:minmax(6em,28%) 1fr 1.8em;gap:.6em;align-items:center;font-size:.8em}
+.live-naam{font-weight:700}
+.live-balk{display:block;height:1.2em;background:var(--white);border:.08em solid var(--ink);border-radius:.5em;overflow:hidden}
+.live-vul{display:block;height:100%;background:var(--blue);transition:width .3s}
+.live-aantal{font-weight:800;text-align:right}
+.live-kaarten{display:grid;grid-template-columns:repeat(auto-fill,minmax(10em,1fr));gap:.4em}
+.live-kaart{background:var(--yellow);border:.1em solid var(--ink);border-radius:.5em;padding:.35em .6em;font-size:.8em;font-weight:700;display:flex;flex-direction:column;gap:.3em;justify-content:space-between}
+.live-kaart p{margin:0}
+.live-kaart .btn{font-size:.7em}

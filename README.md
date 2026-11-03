@@ -9,6 +9,7 @@ Korte talententest (30 stellingen, ongeveer 5 minuten) voor teamgesprekken, geba
 | `test.html` | De vragenlijst, één stelling per scherm |
 | `uitslag.html` | Uitslag met spinnenweb, uitleg per kenmerk, Word/afbeelding/print/mail/link |
 | `kwadrant.html` | Kernkwadranten (naar Daniel Ofman): kies 3 kwaliteiten, vul valkuil, uitdaging en allergie in met suggesties, exporteer |
+| `meedoen.html` | De pagina waar deelnemers met hun telefoon live anoniem antwoorden (via QR-code) |
 | `uitleg.html` | Het Big Five-model, de kernkwadranten, beperkingen, privacy, hoe de site is gemaakt, bronnen |
 | `gesprek.html` | Teamgesprek als geleide, schermvullende presentatie: talentengesprek (60 min), kwadrantengesprek (60 min) of gecombineerd (90 min), met agenda, uitleg, voorbeeld, rolkaarten voor tweegesprekken, timers, rondjes, vragen en ruimte voor afspraken |
 | `assets/` | `style.css`, `data.js` (stellingen en teksten), `kwadrant-data.js` (40 kwaliteiten met suggesties), `kwadrant.js`, `common.js`, `pdf.js` (eigen PDF-schrijver), `test.js`, `uitslag.js`, `uitleg.js`, `gesprek-data.js` (de stappen van de gesprekken), `gesprek.js` (de gespreksleider), `favicon.svg` |
@@ -55,3 +56,16 @@ Lokaal bekijken: `python -m http.server 8765` in deze map en open `http://localh
 - Toetsen S en K tonen de spelregels van het team en de naslag (de vijf kenmerken of het kwadrant).
 - Elk scherm legt uit wat we doen, waarom, wat jouw rol is, wat je doet als het niet lukt en wat daarna komt. De gespreksleider ziet met N tips en antwoorden op vragen die deelnemers kunnen stellen.
 - De stappen staan in `assets/gesprek-data.js` en zijn eenvoudig aan te passen.
+
+## Live meedoen (optioneel)
+- De gespreksleider zet bij de start live meedoen aan. Op het scherm staat een QR-code en een code van 8 tekens. Deelnemers antwoorden anoniem op `meedoen.html`; de antwoorden verschijnen op het scherm.
+- Het kan een eigen vraagtype per scherm zijn: schaal (1-5), keuze of tekst. De vragen staan in `assets/gesprek-data.js` (`live:{...}`). Tekstantwoorden kunnen met een klik naar de afspraken.
+- Verbinding: [Trystero](https://github.com/dmotz/trystero) 0.26 (MIT), samen met `qrcode-generator` (MIT) gebundeld in `assets/vendor/live-lib.js`. Licenties staan in `assets/vendor/LICENSES.txt`.
+- Rechtstreekse verbindingen (WebRTC) tussen telefoon en scherm. Alleen het opzetten loopt via openbare Nostr-servers (wss) en STUN-servers van Google en Cloudflare. De verbindingsgegevens zijn versleuteld met de code.
+- De Content-Security-Policy van `gesprek.html` en `meedoen.html` staat daarom `connect-src wss:` toe. Alle andere pagina's blijven volledig dicht.
+- Opnieuw bouwen van `live-lib.js`: `npm i trystero qrcode-generator esbuild` en bundel een bestand dat `joinRoom`, `selfId` en een `maakQR`-functie exporteert.
+- Rechtstreekse verbindingen werken niet op elk netwerk. Probeer het vooraf met een telefoon.
+
+## Schermen die altijd passen
+- In de gespreksleider (`gesprek.css`, `gesprek.js`) zijn alle maten in `em`. Per scherm zoekt `pasOp()` de grootste lettergrootte (`--fs`) waarbij alles zonder scrollen past, bij elke resolutie en beeldverhouding. Dat gebeurt opnieuw bij een andere schermgrootte en als de inhoud verandert (live antwoorden, fases, vragen).
+- Getest op 800x600, 1024x768, 1280x720, 1366x768, 1920x1080, 2560x1080, 3840x2160, 768x1024 (staand) en 390x844 (telefoon): alle schermen van de drie gesprekken pasten zonder scrollen. Op 800x600 en op een telefoon wordt de tekst op de drukste schermen klein (rond 10 px). Alleen als het echt niet past, mag het scherm scrollen.

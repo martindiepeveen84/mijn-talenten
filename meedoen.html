@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; script-src 'self'; img-src 'self' data:; connect-src wss:; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Meedoen – Mijn talenten</title>
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-page="meedoen" class="meedoen">
+<header class="site-header"><div class="wrap bar"><span class="brand">Mijn talenten</span></div></header>
+<main id="main" class="md-main">
+<noscript><div class="note">Voor meedoen is JavaScript nodig. Zet JavaScript aan en laad de pagina opnieuw.</div></noscript>
+
+<section id="codeKaart" class="card md-kaart hide">
+  <h1>Meedoen met het gesprek</h1>
+  <p>Typ de code die op het scherm staat. Of scan de QR-code opnieuw.</p>
+  <label for="codeIn">Code (8 tekens)</label>
+  <input id="codeIn" type="text" inputmode="text" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="8" class="md-code">
+  <p class="msg" id="codeMsg" aria-live="polite"></p>
+  <button class="btn" id="codeKnop" type="button">Doe mee</button>
+</section>
+
+<section id="statusKaart" class="card md-kaart hide" aria-live="polite">
+  <h1 id="statusKop">Verbinden…</h1>
+  <p id="statusTekst">We zoeken het scherm van de gespreksleider.</p>
+  <p class="small hide" id="statusHulp">Duurt het lang? Controleer je internet. Werkt het niet op de wifi van je werk? Probeer dan mobiel internet (4G of 5G).</p>
+</section>
+
+<section id="vraagKaart" class="card md-kaart hide">
+  <p class="md-label" id="vraagLabel">Vraag</p>
+  <h1 id="vraagTekst"></h1>
+  <p class="small" id="vraagHint"></p>
+  <div id="vraagInvoer"></div>
+  <p class="msg" id="vraagMsg" aria-live="polite"></p>
+</section>
+
+<p class="small md-voet">Je antwoord is anoniem. Er staat geen naam bij en er wordt niets bewaard. <a href="uitleg.html#live">Hoe werkt dit?</a></p>
+</main>
+<script type="module" src="assets/meedoen.js"></script>
+</body>
+</html>

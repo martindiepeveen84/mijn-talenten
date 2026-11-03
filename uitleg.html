@@ -35,6 +35,7 @@
       <li><a href="#kwadranten">Kernkwadranten</a></li>
       <li><a href="#niet">Wat de tools niet zijn</a></li>
       <li><a href="#privacy">Je gegevens</a></li>
+      <li><a href="#live">Live meedoen</a></li>
       <li><a href="#gemaaktmet">Hoe is deze site gemaakt?</a></li>
       <li><a href="#bronnen">Bronnen</a></li>
     </ul>
@@ -110,11 +111,22 @@
     <li><strong>Geen server voor je antwoorden.</strong> De site bestaat uit losse bestanden. Er is geen database en geen inlogsysteem.</li>
     <li><strong>Alles gebeurt in je browser.</strong> De berekening doet je eigen apparaat.</li>
     <li><strong>De uitslag zit in het adres.</strong> Het deel achter het #-teken gaat nooit naar een server. Bij de talententest staan daar alleen je vijf scores, bijvoorbeeld <code>#r=E3.8-A4.2-C2.5-S3.0-O4.5</code>. Bij de kernkwadranten staan daar je gekozen kwaliteiten en je eigen woorden. Een naam staat er nooit in.</li>
-    <li><strong>Geen cookies, geen opslag, geen statistieken.</strong> De pagina's laden niets van buiten. De beveiligingsregels van de pagina blokkeren elke verbinding naar andere sites.</li>
+    <li><strong>Geen cookies, geen opslag, geen statistieken.</strong> De pagina's laden niets van buiten. De beveiligingsregels van de pagina blokkeren elke verbinding naar andere sites. Alleen als de gespreksleider live meedoen aanzet, maken twee pagina's een beveiligde verbinding. Zie <a href="#live">Live meedoen</a>.</li>
     <li><strong>Geen teamoverzicht.</strong> Niemand kan zien wie de test deed of wat iemand scoorde.</li>
     <li><strong>Delen is jouw keuze.</strong> Via een Word-bestand, afbeelding, mail of link. Iedereen met je link ziet je uitslag.</li>
   </ul>
   <div class="note blue">Let op: je webhost (bijvoorbeeld GitHub) kan technisch zien dat iemand de pagina opent, zoals bij elke website. Je antwoorden en scores ziet de host niet.</div>
+
+  <h2 id="live">Live meedoen met de telefoon (optioneel)</h2>
+  <p>Bij het teamgesprek kan de gespreksleider live meedoen aanzetten. Dan toont het scherm een QR-code. Collega's scannen hem en antwoorden anoniem op hun telefoon. De antwoorden verschijnen op het scherm van de gespreksleider.</p>
+  <ul>
+    <li><strong>Standaard staat het uit.</strong> Alleen als de gespreksleider het aanzet, maken de gesprekpagina en de meedoenpagina verbinding met internet. Alle andere pagina's blijven helemaal dicht.</li>
+    <li><strong>Rechtstreeks, zonder eigen server.</strong> De antwoorden gaan van de telefoon naar het scherm van de gespreksleider. Er staat geen naam bij en er wordt niets opgeslagen. Sluit de gespreksleider het gesprek, dan zijn ze weg.</li>
+    <li><strong>Openbare diensten voor het opzetten van de verbinding.</strong> Hiervoor gebruiken we Trystero, een open bibliotheek (MIT-licentie). Die gebruikt een paar openbare Nostr-servers en STUN-servers van Google en Cloudflare. Zij kunnen IP-adressen zien en dat er een kamer met een willekeurige code bestaat. De antwoorden zien ze niet. De verbindingsgegevens zijn versleuteld met de code.</li>
+    <li><strong>De code is geheim voor het team.</strong> Wie de code heeft, kan meedoen. Gebruik per gesprek een nieuwe code. Dat gebeurt vanzelf.</li>
+    <li><strong>Het werkt niet overal.</strong> Sommige bedrijfs- of gastenwifi blokkeert rechtstreekse verbindingen. Probeer dan mobiel internet. Of gebruik het gesprek zonder live meedoen.</li>
+    <li><strong>Niet getest met grote groepen.</strong> De verbindingen lopen tussen alle deelnemers onderling. Het is bedoeld voor teams. Probeer het vooraf.</li>
+  </ul>
 
   <h2 id="gemaaktmet">Hoe is deze site gemaakt?</h2>
   <p>Deze site en alle teksten zijn gemaakt met hulp van AI (Claude van Anthropic) en gecheckt door een mens.</p>

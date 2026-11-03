@@ -3,12 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; script-src 'self'; img-src 'self' data: blob:; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; script-src 'self'; img-src 'self' data: blob:; connect-src wss:; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="description" content="Een teamgesprek met de site als gespreksleider. Kies een gesprek, projecteer je scherm en klik op start.">
 <title>Teamgesprek – Mijn talenten</title>
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/gesprek.css">
 </head>
 <body data-page="gesprek">
 <a class="skip" href="#main">Naar de inhoud</a>
@@ -53,6 +54,21 @@
       </div>
     </div>
     <div class="note blue"><strong>Tip:</strong> projecteer de pagina op het scherm en druk op <strong>F</strong> voor volledig scherm. Met de pijltjestoetsen ga je naar de volgende of vorige stap. Met <strong>N</strong> zie je de tips voor jou als gespreksleider, met <strong>S</strong> de spelregels van het team en met <strong>K</strong> de naslag. Wil je die tips alleen zelf lezen? Open dezelfde stap dan op je eigen telefoon. De stappen lopen niet automatisch mee, dus je klikt op beide apparaten door.</div>
+    <div class="card live-keuze">
+      <label class="live-label"><input type="checkbox" id="liveAan"> <strong>Laat het team live meedoen met de telefoon</strong> <span class="time">nieuw</span></label>
+      <p>Bij de start zie je een QR-code. Iedereen scant hem en antwoordt anoniem. De antwoorden verschijnen op het scherm. Zo krijgen ook stillere collega's een stem.</p>
+      <details>
+        <summary>Hoe zit het met privacy en wat heb ik nodig?</summary>
+        <ul>
+          <li>Antwoorden gaan rechtstreeks van de telefoon naar jouw scherm. Er staat geen naam bij en er wordt niets opgeslagen.</li>
+          <li>Om de verbinding op te zetten gebruikt de site openbare diensten: een paar openbare Nostr-servers en STUN-servers van Google en Cloudflare. Zij kunnen IP-adressen zien en dat er een kamer met een willekeurige code bestaat. De antwoorden zien ze niet. De verbindingsgegevens zijn versleuteld met de code.</li>
+          <li>De code is geheim voor jouw team. Wie de code heeft, kan meedoen.</li>
+          <li>Rechtstreekse verbindingen werken niet overal. Sommige bedrijfs- of gastenwifi blokkeert ze. Werkt het niet? Laat de telefoons dan mobiel internet gebruiken, of zet live meedoen uit en laat iedereen op papier meedoen.</li>
+          <li>Probeer het vooraf met je eigen telefoon.</li>
+        </ul>
+      </details>
+      <p class="msg" id="liveMsg" aria-live="polite"></p>
+    </div>
     <div class="btn-row"><button class="btn" id="startKnop" type="button">Start het gesprek</button></div>
     <p class="small">Er wordt niets opgeslagen. De afspraken die je tijdens het gesprek typt, staan alleen op dit scherm. Download ze aan het einde.</p>
   </section>
@@ -87,7 +103,7 @@
 
 <!-- Gespreksleider: schermvullend -->
 <div id="deck" class="deck hide" role="dialog" aria-modal="true" aria-label="Teamgesprek">
-  <div class="deck-top"><span id="deckTitel"></span><span id="deckStap"></span><span id="deckTotaal" aria-label="Totale tijd"></span></div>
+  <div class="deck-top"><span id="deckTitel"></span><span id="deckStap"></span><span id="deckLive"></span><span id="deckTotaal" aria-label="Totale tijd"></span></div>
   <div class="deck-prog" id="deckProg" aria-hidden="true"></div>
   <div class="deck-main"><div id="slide" class="slide" aria-live="polite"></div></div>
   <div id="paneel" class="paneel hide" role="note"></div>
@@ -97,6 +113,7 @@
     <button class="btn btn-white btn-small" id="dTips" type="button" aria-pressed="false">Tips (N)</button>
     <button class="btn btn-white btn-small" id="dRegels" type="button" aria-pressed="false">Spelregels (S)</button>
     <button class="btn btn-white btn-small" id="dNaslag" type="button" aria-pressed="false">Naslag (K)</button>
+    <button class="btn btn-white btn-small hide" id="dMeedoen" type="button" aria-pressed="false">Meedoen (Q)</button>
     <button class="btn btn-white btn-small" id="dGeluid" type="button" aria-pressed="false">Geluid uit</button>
     <button class="btn btn-white btn-small" id="dScherm" type="button">Volledig scherm (F)</button>
     <button class="btn btn-white btn-small" id="dStop" type="button">Stop</button>
@@ -107,12 +124,13 @@
 <footer class="site-footer"><div class="wrap foot-grid">
   <div><h2>Mijn talenten</h2><p>Een korte talententest voor teamgesprekken. Gebaseerd op het Big Five-model.</p></div>
   <div><h2>Pagina's</h2><ul><li><a href="test.html">Talententest</a></li><li><a href="kwadrant.html">Kernkwadranten</a></li><li><a href="gesprek.html">Teamgesprek</a></li><li><a href="uitleg.html">Uitleg</a></li></ul></div>
-  <div><h2>Let op</h2><p>Deze pagina bewaart niets en stuurt niets door. Niet geschikt voor selectie of beoordeling.</p><p>Gemaakt met Claude (Anthropic) en gecheckt door een mens. <a href="uitleg.html#gemaaktmet">Lees meer</a></p></div>
+  <div><h2>Let op</h2><p>Deze pagina bewaart niets. Alleen als live meedoen aanstaat, maakt hij een rechtstreekse verbinding met telefoons (zie <a href="uitleg.html#live">Uitleg</a>). Niet geschikt voor selectie of beoordeling.</p><p>Gemaakt met Claude (Anthropic) en gecheckt door een mens. <a href="uitleg.html#gemaaktmet">Lees meer</a></p></div>
 </div></footer>
 <script src="assets/data.js"></script>
 <script src="assets/kwadrant-data.js"></script>
 <script src="assets/common.js"></script>
 <script src="assets/gesprek-data.js"></script>
 <script src="assets/gesprek.js"></script>
+<script type="module" src="assets/live-host.js"></script>
 </body>
 </html>
