@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; script-src 'self'; img-src 'self' data: blob:; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<meta name="description" content="Maak je eigen kernkwadranten: je kwaliteit, valkuil, uitdaging en allergie. Er wordt niets opgeslagen.">
+<title>Kernkwadranten – Mijn talenten</title>
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-page="kwadrant">
+<a class="skip" href="#main">Naar de inhoud</a>
+<header class="site-header"><div class="wrap bar">
+  <a class="brand" href="index.html">Mijn talenten</a>
+  <nav aria-label="Hoofdmenu">
+    <a href="index.html" data-page="home">Home</a>
+    <a href="kwadrant.html" data-page="kwadrant">Kernkwadranten</a>
+    <a href="uitleg.html" data-page="uitleg">Uitleg</a>
+    <a href="gesprek.html" data-page="gesprek">Teamgesprek</a>
+  </nav>
+  <a class="btn btn-small" href="test.html">Talententest</a>
+</div></header>
+
+<main id="main">
+<noscript><div class="wrap narrow section"><div class="note">Voor deze pagina is JavaScript nodig. Zet JavaScript aan en laad de pagina opnieuw.</div></div></noscript>
+
+<!-- Start -->
+<div id="s0">
+<section class="page-head">
+  <div class="wrap">
+    <h1>Maak je kernkwadranten</h1>
+    <p>Kies drie kwaliteiten waar jij je in herkent. Ontdek wat de keerzijde is, wat je kunt leren en waar je je aan irriteert.</p>
+  </div>
+</section>
+<div class="wrap">
+  <section class="section">
+    <div class="split">
+      <div>
+        <h2>Wat is een kernkwadrant?</h2>
+        <p>Elke kwaliteit heeft een keerzijde. Als je er te veel van doet, wordt je kwaliteit een valkuil. Wat je kunt leren is bijna het tegenovergestelde. En als iemand daar te ver in doorslaat, irriteer je je eraan.</p>
+        <p>Dat laatste is bijzonder: wat jou irriteert, is vaak een kwaliteit die je zelf nog kunt ontwikkelen.</p>
+        <div class="btn-row"><button class="btn" id="startKnop" type="button">Maak mijn kwadranten</button></div>
+        <p class="small">Duurt ongeveer 10 minuten. Er wordt niets opgeslagen.</p>
+      </div>
+      <div class="kw-voorbeeld" aria-label="Voorbeeld van een kernkwadrant">
+        <p class="kw-titel">Voorbeeld: besluitvaardig</p>
+        <div class="kw-grid">
+          <div class="kw-box kw-kern"><b>Kernkwaliteit</b><span>Besluitvaardig</span></div>
+          <div class="kw-box kw-valkuil"><b>Valkuil</b><span>Drammerig</span></div>
+          <div class="kw-box kw-uitdaging"><b>Uitdaging</b><span>Geduld</span></div>
+          <div class="kw-box kw-allergie"><b>Allergie</b><span>Iemand die niet kan kiezen</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="section">
+    <h2>Zo werkt het</h2>
+    <div class="grid g3">
+      <div class="card"><span class="num">1</span><h3>Kies je groepen</h3><p>Welke onderwerpen spreken je aan? Bijvoorbeeld samenwerken of doorzetten.</p></div>
+      <div class="card"><span class="num">2</span><h3>Kies 3 kwaliteiten</h3><p>Uit die groepen kies je de drie die het meest bij je passen.</p></div>
+      <div class="card"><span class="num">3</span><h3>Vul je kwadranten in</h3><p>Je krijgt vragen en suggesties. Kies wat past of schrijf het zelf.</p></div>
+    </div>
+    <div class="note blue"><strong>Goed om te weten:</strong> het kernkwadrant is een model van Daniel Ofman uit de coaching. Het is een hulpmiddel om na te denken over jezelf. Het is geen test en er is geen onderzoek naar gedaan. De lijst met kwaliteiten en de suggesties zijn door ons zelf geschreven.</div>
+  </section>
+</div>
+</div>
+
+<!-- Stappen -->
+<div id="stappen" class="test-wrap hide">
+  <div class="progress" role="progressbar" aria-label="Voortgang" aria-valuemin="0" aria-valuemax="3" id="progress"><div id="bar"></div></div>
+  <div class="counter"><span id="stapTekst"></span><span id="stapHulp"></span></div>
+
+  <section id="s1" class="hide">
+    <h1 class="stap-kop">Welke groepen spreken je aan?</h1>
+    <p>Kies 1, 2 of 3 groepen. Denk aan: waar ben ik goed in?</p>
+    <div class="grid g2 pick-grid" id="groepen"></div>
+    <p class="msg" id="msg1" aria-live="polite"></p>
+    <div class="test-nav"><button class="link-btn" id="terug1" type="button">← Terug</button><button class="btn" id="verder1" type="button">Verder</button></div>
+  </section>
+
+  <section id="s2" class="hide">
+    <h1 class="stap-kop">Kies je 3 kwaliteiten</h1>
+    <p>Welke drie passen het meest bij jou? Kies met je gevoel. <strong id="telGekozen">Gekozen: 0 van 3</strong></p>
+    <div class="grid g2 pick-grid" id="kwaliteiten"></div>
+    <p class="msg" id="msg2" aria-live="polite"></p>
+    <div class="test-nav"><button class="link-btn" id="terug2" type="button">← Vorige</button><button class="btn" id="verder2" type="button">Verder</button></div>
+  </section>
+
+  <section id="s3" class="hide">
+    <h1 class="stap-kop" id="edKop"></h1>
+    <p id="edUitleg"></p>
+    <div id="vakken"></div>
+    <p class="msg" id="msg3" aria-live="polite"></p>
+    <div class="test-nav"><button class="link-btn" id="terug3" type="button">← Vorige</button><button class="btn" id="verder3" type="button">Verder</button></div>
+  </section>
+</div>
+
+<!-- Resultaat -->
+<div id="s4" class="hide">
+<section class="page-head">
+  <div class="wrap">
+    <h1>Jouw kernkwadranten <span id="printNaam"></span></h1>
+    <p>Hieronder zie je je drie kwadranten. Lees ze rustig door. Klopt het? Pas het aan als iets niet klopt.</p>
+    <p class="small">Deze pagina bewaart niets. Je kwadranten zitten in het adres van de pagina. Bewaar de link of download je resultaat.</p>
+  </div>
+</section>
+<div class="wrap">
+  <section class="section"><div id="resultaat"></div></section>
+
+  <section class="section">
+    <h2>Vragen om mee verder te gaan</h2>
+    <div class="card"><ul id="gespreksvragen"></ul></div>
+    <div class="note"><strong>Let op:</strong> je allergie gaat over gedrag, niet over een persoon. Gebruik het kernkwadrant niet om anderen te beoordelen.</div>
+  </section>
+
+  <section class="share" aria-labelledby="deelKop">
+    <h2 id="deelKop">Bewaar of deel je kwadranten</h2>
+    <label for="naam">Naam (mag leeg)</label>
+    <input type="text" id="naam" autocomplete="off">
+    <p class="small">Je naam komt alleen in je eigen bestand. Hij wordt nergens opgeslagen en zit niet in de link.</p>
+    <div class="btn-grid">
+      <button class="btn" id="pdfKnop" type="button">Download als PDF</button>
+      <button class="btn" id="wordKnop" type="button">Download als Word-bestand</button>
+      <button class="btn btn-white" id="printKnop" type="button">Print de resultaten</button>
+      <button class="btn btn-white" id="mailKnop" type="button">Mail naar mezelf</button>
+      <button class="btn btn-white" id="linkKnop" type="button">Kopieer link</button>
+    </div>
+    <p class="msg" id="melding" aria-live="polite"></p>
+    <p class="small">In de link staan je kwaliteiten en je antwoorden. Iedereen met de link kan ze lezen. Deel hem alleen met mensen die je dat gunt.</p>
+  </section>
+
+  <div class="btn-row">
+    <button class="btn" id="aanpasKnop" type="button">Aanpassen</button>
+    <button class="btn btn-white" id="opnieuwKnop" type="button">Opnieuw beginnen</button>
+    <a class="btn btn-white" href="gesprek.html">Naar het teamgesprek</a>
+  </div>
+</div>
+</div>
+</main>
+
+<footer class="site-footer"><div class="wrap foot-grid">
+  <div><h2>Mijn talenten</h2><p>Een talententest en kernkwadranten voor teamgesprekken.</p></div>
+  <div><h2>Pagina's</h2><ul><li><a href="test.html">Talententest</a></li><li><a href="kwadrant.html">Kernkwadranten</a></li><li><a href="uitleg.html">Uitleg</a></li><li><a href="gesprek.html">Teamgesprek</a></li></ul></div>
+  <div><h2>Let op</h2><p>Deze pagina bewaart niets en stuurt niets door. Niet geschikt voor selectie of beoordeling.</p></div>
+</div></footer>
+<script src="assets/data.js"></script>
+<script src="assets/kwadrant-data.js"></script>
+<script src="assets/common.js"></script>
+<script src="assets/pdf.js"></script>
+<script src="assets/kwadrant.js"></script>
+</body>
+</html>

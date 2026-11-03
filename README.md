@@ -8,9 +8,10 @@ Korte talententest (30 stellingen, ongeveer 5 minuten) voor teamgesprekken, geba
 | `index.html` | Landingspagina: uitleg, werking, privacy, veelgestelde vragen |
 | `test.html` | De vragenlijst, één stelling per scherm |
 | `uitslag.html` | Uitslag met spinnenweb, uitleg per kenmerk, Word/afbeelding/print/mail/link |
+| `kwadrant.html` | Kernkwadranten (naar Daniel Ofman): kies 3 kwaliteiten, vul valkuil, uitdaging en allergie in met suggesties, exporteer |
 | `uitleg.html` | Het Big Five-model, hoe de test is gemaakt, beperkingen, privacy, bronnen |
 | `gesprek.html` | Stappenplan voor een teamgesprek van 45 minuten met gespreksvragen |
-| `assets/` | `style.css`, `data.js` (stellingen en teksten), `common.js`, `pdf.js` (eigen PDF-schrijver), `test.js`, `uitslag.js`, `uitleg.js`, `gesprek.js`, `favicon.svg` |
+| `assets/` | `style.css`, `data.js` (stellingen en teksten), `kwadrant-data.js` (40 kwaliteiten met suggesties), `kwadrant.js`, `common.js`, `pdf.js` (eigen PDF-schrijver), `test.js`, `uitslag.js`, `uitleg.js`, `gesprek.js`, `favicon.svg` |
 
 ## Op GitHub zetten
 1. Maak een repository (bijvoorbeeld `mijn-talenten`).
@@ -37,3 +38,10 @@ Lokaal bekijken: `python -m http.server 8765` in deze map en open `http://localh
 ## Aanpassen
 - Teksten en stellingen: `assets/data.js` (`ITEMS`, `DOMEINEN`).
 - Kleuren: `:root` in `assets/style.css` (lichtblauw `#66d1ff`, geel `#fff04f`, geen logo's).
+
+## Kernkwadranten
+- Eigen lijst van 40 kwaliteiten in 8 groepen, met eigen suggesties. Alle suggesties zijn vooraf geschreven. Er is bewust geen live AI: die zou de tekst van de gebruiker naar een externe dienst sturen.
+- Suggesties staan standaard ingeklapt, niets is voorgekozen en elke suggestie kan worden weggeklikt (tegen sturing door suggesties).
+- De allergie gaat over gedrag van anderen, niet over personen. De pagina vraagt om geen namen te noemen.
+- Het kwadrant zit in de link (`kwadrant.html#k=...`). Dat bevat de gekozen kwaliteiten en de antwoorden van de gebruiker, geen naam.
+- Het kernkwadrant is een coachmodel. Er is geen onderzoek naar de werking gevonden, en dat staat ook op de pagina.
