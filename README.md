@@ -10,8 +10,8 @@ Korte talententest (30 stellingen, ongeveer 5 minuten) voor teamgesprekken, geba
 | `uitslag.html` | Uitslag met spinnenweb, uitleg per kenmerk, Word/afbeelding/print/mail/link |
 | `kwadrant.html` | Kernkwadranten (naar Daniel Ofman): kies 3 kwaliteiten, vul valkuil, uitdaging en allergie in met suggesties, exporteer |
 | `uitleg.html` | Het Big Five-model, de kernkwadranten, beperkingen, privacy, hoe de site is gemaakt, bronnen |
-| `gesprek.html` | Teamgesprek in drie vormen: talentengesprek (45 min), kwadrantengesprek (45 min) en gecombineerd (75 min), met spelregels, gespreksvragen en tips |
-| `assets/` | `style.css`, `data.js` (stellingen en teksten), `kwadrant-data.js` (40 kwaliteiten met suggesties), `kwadrant.js`, `common.js`, `pdf.js` (eigen PDF-schrijver), `test.js`, `uitslag.js`, `uitleg.js`, `gesprek.js`, `favicon.svg` |
+| `gesprek.html` | Teamgesprek als geleide, schermvullende presentatie: talentengesprek (45 min), kwadrantengesprek (45 min) of gecombineerd (75 min), met timers, tweetalrondes, rondjes, vragen en ruimte voor afspraken |
+| `assets/` | `style.css`, `data.js` (stellingen en teksten), `kwadrant-data.js` (40 kwaliteiten met suggesties), `kwadrant.js`, `common.js`, `pdf.js` (eigen PDF-schrijver), `test.js`, `uitslag.js`, `uitleg.js`, `gesprek-data.js` (de stappen van de gesprekken), `gesprek.js` (de gespreksleider), `favicon.svg` |
 
 ## Op GitHub zetten
 1. Maak een repository (bijvoorbeeld `mijn-talenten`).
@@ -45,3 +45,11 @@ Lokaal bekijken: `python -m http.server 8765` in deze map en open `http://localh
 - De allergie gaat over gedrag van anderen, niet over personen. De pagina vraagt om geen namen te noemen.
 - Het kwadrant zit in de link (`kwadrant.html#k=...`). Dat bevat de gekozen kwaliteiten en de antwoorden van de gebruiker, geen naam.
 - Het kernkwadrant is een coachmodel. Er is geen onderzoek naar de werking gevonden, en dat staat ook op de pagina.
+
+## Teamgesprek als gespreksleider
+- Kies een gesprek, klik op Start en projecteer het scherm. De site gaat stap voor stap door het gesprek, met een timer per stap, tweetalrondes met fases, rondjes, gespreksvragen en een scherm voor afspraken.
+- Toetsen: pijl rechts of spatie = volgende, pijl links = vorige, F = volledig scherm, N = tips voor de gespreksleider, T = timer start/pauze.
+- De stand staat in het adres (`gesprek.html#g=talenten&s=4`). Zo kan een gespreksleider dezelfde stap op een tweede apparaat openen om de tips te lezen. De apparaten lopen niet automatisch synchroon.
+- Het scherm blijft aan (waar de browser dat toestaat). De bedieningsknoppen verdwijnen na enkele seconden, zodat ze niet op het scherm staan.
+- Er wordt niets opgeslagen. De afspraken staan alleen op het scherm en kunnen worden gedownload, gekopieerd of geprint.
+- De stappen staan in `assets/gesprek-data.js` en zijn eenvoudig aan te passen.
