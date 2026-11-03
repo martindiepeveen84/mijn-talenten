@@ -10,7 +10,7 @@ Korte talententest (30 stellingen, ongeveer 5 minuten) voor teamgesprekken, geba
 | `uitslag.html` | Uitslag met spinnenweb, uitleg per kenmerk, Word/afbeelding/print/mail/link |
 | `kwadrant.html` | Kernkwadranten (naar Daniel Ofman): kies 3 kwaliteiten, vul valkuil, uitdaging en allergie in met suggesties, exporteer |
 | `uitleg.html` | Het Big Five-model, de kernkwadranten, beperkingen, privacy, hoe de site is gemaakt, bronnen |
-| `gesprek.html` | Teamgesprek als geleide, schermvullende presentatie: talentengesprek (45 min), kwadrantengesprek (45 min) of gecombineerd (75 min), met timers, tweetalrondes, rondjes, vragen en ruimte voor afspraken |
+| `gesprek.html` | Teamgesprek als geleide, schermvullende presentatie: talentengesprek (60 min), kwadrantengesprek (60 min) of gecombineerd (90 min), met agenda, uitleg, voorbeeld, rolkaarten voor tweegesprekken, timers, rondjes, vragen en ruimte voor afspraken |
 | `assets/` | `style.css`, `data.js` (stellingen en teksten), `kwadrant-data.js` (40 kwaliteiten met suggesties), `kwadrant.js`, `common.js`, `pdf.js` (eigen PDF-schrijver), `test.js`, `uitslag.js`, `uitleg.js`, `gesprek-data.js` (de stappen van de gesprekken), `gesprek.js` (de gespreksleider), `favicon.svg` |
 
 ## Op GitHub zetten
@@ -52,4 +52,6 @@ Lokaal bekijken: `python -m http.server 8765` in deze map en open `http://localh
 - De stand staat in het adres (`gesprek.html#g=talenten&s=4`). Zo kan een gespreksleider dezelfde stap op een tweede apparaat openen om de tips te lezen. De apparaten lopen niet automatisch synchroon.
 - Het scherm blijft aan (waar de browser dat toestaat). De bedieningsknoppen verdwijnen na enkele seconden, zodat ze niet op het scherm staan.
 - Er wordt niets opgeslagen. De afspraken staan alleen op het scherm en kunnen worden gedownload, gekopieerd of geprint.
+- Toetsen S en K tonen de spelregels van het team en de naslag (de vijf kenmerken of het kwadrant).
+- Elk scherm legt uit wat we doen, waarom, wat jouw rol is, wat je doet als het niet lukt en wat daarna komt. De gespreksleider ziet met N tips en antwoorden op vragen die deelnemers kunnen stellen.
 - De stappen staan in `assets/gesprek-data.js` en zijn eenvoudig aan te passen.

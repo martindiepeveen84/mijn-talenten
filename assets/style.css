@@ -285,10 +285,50 @@ details p{margin:.2em 0 .9em}
 .deck-controls{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;padding:10px 16px;background:var(--white);border-top:3px solid var(--ink);transition:opacity .4s}
 .deck.idle .deck-controls{opacity:0;pointer-events:none}
 .deck-controls .btn[disabled]{opacity:.4;cursor:default;transform:none}
-.tips-panel{position:absolute;left:clamp(12px,3vw,36px);bottom:84px;max-width:min(560px,92vw);background:var(--white);border:3px solid var(--ink);border-radius:16px;padding:14px 18px;box-shadow:6px 6px 0 var(--ink);font-size:clamp(.95rem,1.4vw,1.15rem);z-index:5}
 body.deck-open{overflow:hidden}
 #printAfspraken{display:none}
 @media print{
   body.deck-open>*:not(#printAfspraken){display:none!important}
   body.deck-open #printAfspraken{display:block!important}
 }
+
+/* Teamgesprek: didactische bouwstenen */
+.waarom{font-size:clamp(1rem,1.7vw,1.35rem);color:var(--muted);margin:.2em 0 .8em}
+.waarom strong{color:var(--ink)}
+.alinea{font-size:clamp(1.2rem,2.3vw,2rem);line-height:1.4;margin:.6em 0}
+.hierna{margin-top:1.4em;font-size:clamp(.9rem,1.4vw,1.15rem);font-weight:700;color:var(--blue-deep);border-top:2px dashed var(--line);padding-top:10px}
+.kolommen{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin:.8em 0}
+.kolom{padding:16px 20px}
+.kolom h3{margin:0 0 .3em;font-size:clamp(1.15rem,2.1vw,1.7rem)}
+.kolom ul{font-size:clamp(1rem,1.9vw,1.5rem)}
+.kw-box.kw-kern .btn,.kolom{font-weight:500}
+.bord{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;margin:.6em 0}
+.bord-kaart{background:var(--white);border:3px solid var(--ink);border-radius:18px;padding:14px 18px}
+.bord-kaart h3{margin:0;font-size:clamp(1.1rem,2vw,1.6rem)}
+.polen-klein{font-size:clamp(.85rem,1.3vw,1.05rem);color:var(--muted);margin:.2em 0 .5em}
+.bord-vraag{font-size:clamp(1rem,1.8vw,1.4rem);font-weight:600;margin:.2em 0}
+.bord-kies .bord-kaart ul{font-size:clamp(.95rem,1.6vw,1.25rem)}
+.rollen{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin:.6em 0}
+.rol{padding:16px 20px}
+.rol h3{margin:0 0 .3em;font-size:clamp(1.2rem,2.2vw,1.8rem)}
+.rol p{font-size:clamp(1.05rem,1.9vw,1.5rem);margin:.2em 0}
+.hulp-kader{background:var(--white);border:3px dashed var(--ink);border-radius:16px;padding:12px 18px;font-size:clamp(1rem,1.7vw,1.35rem);margin-top:.8em}
+.hulp{font-size:clamp(1rem,1.7vw,1.3rem);color:var(--muted)}
+.hierna-fase{font-weight:700;color:var(--blue-deep);align-self:center}
+.bijdragen{margin:1em 0}
+.bijdragen-kop{font-weight:800;margin:0 0 6px;font-size:clamp(1rem,1.8vw,1.4rem)}
+.bijdragen-rij{display:flex;flex-wrap:wrap;gap:8px}
+.bijdrage{background:var(--white);border:3px solid var(--ink);border-radius:20px;padding:4px 16px;font-weight:700;font-size:clamp(.95rem,1.7vw,1.3rem)}
+.agenda{list-style:none;padding:0;margin:.6em 0}
+.agenda li{display:flex;justify-content:space-between;gap:16px;align-items:baseline;background:var(--white);border:3px solid var(--ink);border-radius:14px;padding:8px 18px;margin:8px 0;font-size:clamp(1.15rem,2.2vw,1.8rem);font-weight:700}
+.kw-bouw .uitleg-nu{font-size:clamp(1.2rem,2.3vw,2rem);font-weight:600;margin:.8em 0}
+.kw-box.verborgen-vak{opacity:.35;background:var(--white)}
+.kw-box.nieuw-vak{box-shadow:0 0 0 5px var(--yellow),0 0 0 8px var(--ink)}
+.kw-groot .kw-box span{font-size:clamp(1.1rem,2.2vw,1.8rem);font-weight:700}
+.kw-groot .kw-box b{font-size:clamp(.8rem,1.4vw,1.1rem)}
+.paneel{position:absolute;left:clamp(12px,3vw,36px);right:clamp(12px,3vw,36px);bottom:84px;max-height:60%;overflow:auto;background:var(--white);border:3px solid var(--ink);border-radius:16px;padding:14px 20px;box-shadow:6px 6px 0 var(--ink);font-size:clamp(.95rem,1.4vw,1.15rem);z-index:5}
+.paneel-kop{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:6px}
+.paneel-sub{font-weight:800;margin:.8em 0 .2em}
+.paneel .faq{display:flex;flex-direction:column;margin:.5em 0}
+.paneel ul{font-size:inherit}
+.paneel .bord{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}

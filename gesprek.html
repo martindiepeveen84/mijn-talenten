@@ -52,7 +52,7 @@
         <ol id="overzicht" class="overzicht"></ol>
       </div>
     </div>
-    <div class="note blue"><strong>Tip:</strong> projecteer de pagina op het scherm en druk op <strong>F</strong> voor volledig scherm. Met de pijltjestoetsen ga je naar de volgende of vorige stap. De tips voor jou als gespreksleider zie je met de toets <strong>N</strong>. Wil je die tips alleen zelf lezen? Open dezelfde stap dan op je eigen telefoon. De stappen lopen niet automatisch mee, dus je klikt op beide apparaten door.</div>
+    <div class="note blue"><strong>Tip:</strong> projecteer de pagina op het scherm en druk op <strong>F</strong> voor volledig scherm. Met de pijltjestoetsen ga je naar de volgende of vorige stap. Met <strong>N</strong> zie je de tips voor jou als gespreksleider, met <strong>S</strong> de spelregels van het team en met <strong>K</strong> de naslag. Wil je die tips alleen zelf lezen? Open dezelfde stap dan op je eigen telefoon. De stappen lopen niet automatisch mee, dus je klikt op beide apparaten door.</div>
     <div class="btn-row"><button class="btn" id="startKnop" type="button">Start het gesprek</button></div>
     <p class="small">Er wordt niets opgeslagen. De afspraken die je tijdens het gesprek typt, staan alleen op dit scherm. Download ze aan het einde.</p>
   </section>
@@ -90,11 +90,13 @@
   <div class="deck-top"><span id="deckTitel"></span><span id="deckStap"></span><span id="deckTotaal" aria-label="Totale tijd"></span></div>
   <div class="deck-prog" id="deckProg" aria-hidden="true"></div>
   <div class="deck-main"><div id="slide" class="slide" aria-live="polite"></div></div>
-  <div id="tips" class="tips-panel hide" role="note"></div>
+  <div id="paneel" class="paneel hide" role="note"></div>
   <div class="deck-controls">
     <button class="btn btn-white btn-small" id="dVorige" type="button">← Vorige</button>
     <button class="btn btn-small" id="dVolgende" type="button">Volgende →</button>
     <button class="btn btn-white btn-small" id="dTips" type="button" aria-pressed="false">Tips (N)</button>
+    <button class="btn btn-white btn-small" id="dRegels" type="button" aria-pressed="false">Spelregels (S)</button>
+    <button class="btn btn-white btn-small" id="dNaslag" type="button" aria-pressed="false">Naslag (K)</button>
     <button class="btn btn-white btn-small" id="dGeluid" type="button" aria-pressed="false">Geluid uit</button>
     <button class="btn btn-white btn-small" id="dScherm" type="button">Volledig scherm (F)</button>
     <button class="btn btn-white btn-small" id="dStop" type="button">Stop</button>

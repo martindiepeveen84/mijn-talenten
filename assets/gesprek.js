@@ -4,19 +4,19 @@
 "use strict";
 var T=window.TALENT, K=window.KWADRANT, G=window.GESPREK, mk=window.UI.maakEl;
 function el(id){return document.getElementById(id);}
-var st={g:null,i:0,slides:[],afspraken:"",geluid:false,tips:false,start:0,timer:null,tick:null,idle:null,wake:null,fase:0,kies:null,vraag:0};
+var st={g:null,i:0,slides:[],afspraken:"",veilig:"",geluid:false,paneel:null,start:0,timer:null,tick:null,idle:null,wake:null,fase:0,vraag:0,reveal:0};
 
 /* ---------- Hulpjes ---------- */
 function pad(n){return (n<10?"0":"")+n;}
 function mmss(sec){return pad(Math.floor(sec/60))+":"+pad(sec%60);}
 function slideMin(s){
   if(s.min)return s.min;
-  if(s.fases)return s.fases.reduce(function(a,f){return a+f.min;},0);
+  if(s.fases)return s.fases.reduce(function(a,f){return a+(f.min||0);},0);
   return 0;
 }
 function stappen(g){
-  var res=[], lijst=G.gesprekken[g].slides;
-  lijst.forEach(function(s){
+  var res=[];
+  G.gesprekken[g].slides.forEach(function(s){
     if(!s.stap)return;
     var r=res[s.stap-1]; if(!r){r=res[s.stap-1]={nr:s.stap,naam:s.stapNaam,min:0};}
     r.min+=slideMin(s);
@@ -34,6 +34,7 @@ function piep(){
     setTimeout(function(){c.close();},1600);
   }catch(e){}
 }
+function punten(lijst){var ul=mk("ul"); lijst.forEach(function(t){ul.appendChild(mk("li",null,t));}); return ul;}
 
 /* ---------- Voorbereiden ---------- */
 function renderKeuzes(){
@@ -91,43 +92,45 @@ function maakTimer(min){
   knoppen.appendChild(start); knoppen.appendChild(reset);
   box.appendChild(label); box.appendChild(tijd); box.appendChild(knoppen);
   toon();
-  return {el:box,
-    zet:function(m,auto){stop(); totaal=m*60; rest=totaal; toon(); if(auto)begin();},
-    wissel:wissel, stop:stop};
+  return {el:box, zet:function(m,auto){stop(); totaal=m*60; rest=totaal; toon(); if(auto)begin();}, wissel:wissel, stop:stop};
 }
 
-/* ---------- Stappen tonen ---------- */
-function punten(lijst){var ul=mk("ul"); lijst.forEach(function(t){ul.appendChild(mk("li",null,t));}); return ul;}
-function kwVoorbeeld(){
-  var g=mk("div","kw-grid kw-groot");
-  [["kw-kern","Kernkwaliteit","Besluitvaardig"],["kw-valkuil","Valkuil","Drammerig"],["kw-uitdaging","Uitdaging","Geduld"],["kw-allergie","Allergie","Iemand die niet kan kiezen"]].forEach(function(r){
+/* ---------- Bouwstenen ---------- */
+function kopblok(s,inh){
+  inh.appendChild(mk("h1",null,s.kop));
+  if(s.intro)inh.appendChild(mk("p","instructie",s.intro));
+  if(s.instructie)inh.appendChild(mk("p","instructie",s.instructie));
+  if(s.waarom){var w=mk("p","waarom"); w.appendChild(mk("strong",null,"Waarom: ")); w.appendChild(document.createTextNode(s.waarom)); inh.appendChild(w);}
+}
+function kolommen(lijst){
+  var g=mk("div","kolommen");
+  lijst.forEach(function(k){
+    var b=mk("div","kolom kw-box "+(k.klasse||"")); b.appendChild(mk("h3",null,k.kop)); b.appendChild(punten(k.punten)); g.appendChild(b);
+  });
+  return g;
+}
+function bordEl(modus){
+  var g=mk("div","bord bord-"+modus);
+  T.VOLGORDE.forEach(function(d){
+    var info=T.DOMEINEN[d], k=mk("div","bord-kaart");
+    k.appendChild(mk("h3",null,info.naam));
+    k.appendChild(mk("p","polen-klein",info.links+" ↔ "+info.rechts));
+    k.appendChild(mk("p","bord-vraag",G.kort[d]));
+    if(modus==="kies"){k.appendChild(punten(info.vragen));}
+    g.appendChild(k);
+  });
+  return g;
+}
+function kwadrantUitleg(){
+  var g=mk("div","kw-grid");
+  [["kw-kern","Kernkwaliteit","Wat je goed kunt"],["kw-valkuil","Valkuil","Als je er te veel van doet"],["kw-uitdaging","Uitdaging","Wat je kunt leren"],["kw-allergie","Allergie","Gedrag van anderen dat je irriteert"]].forEach(function(r){
     var b=mk("div","kw-box "+r[0]); b.appendChild(mk("b",null,r[1])); b.appendChild(mk("span",null,r[2])); g.appendChild(b);
   });
   return g;
 }
-function kenmerkKiezer(){
-  var blok=mk("div","kiezer");
-  function teken(){
-    blok.textContent="";
-    blok.appendChild(mk("p","kiezer-kop","Kies een kenmerk om over te praten"));
-    var rij=mk("div","kiezer-knoppen");
-    T.VOLGORDE.forEach(function(d){
-      var b=mk("button","btn btn-small"+(st.kies===d?"":" btn-white"),T.DOMEINEN[d].naam); b.type="button";
-      b.setAttribute("aria-pressed",st.kies===d?"true":"false");
-      b.addEventListener("click",function(){st.kies=d; teken();});
-      rij.appendChild(b);
-    });
-    var r=mk("button","btn btn-small btn-white","Kies voor ons"); r.type="button";
-    r.addEventListener("click",function(){st.kies=T.VOLGORDE[Math.floor(Math.random()*T.VOLGORDE.length)]; teken();});
-    rij.appendChild(r); blok.appendChild(rij);
-    if(st.kies){
-      var info=T.DOMEINEN[st.kies], kaart=mk("div","kiezer-kaart");
-      kaart.appendChild(mk("h3",null,info.naam));
-      kaart.appendChild(mk("p","small",info.links+" ↔ "+info.rechts));
-      kaart.appendChild(punten(info.vragen)); blok.appendChild(kaart);
-    }
-  }
-  teken(); return blok;
+function veiligLijst(){
+  var rijen=st.veilig.split("\n").map(function(r){return r.replace(/^[•\-\s]+/,"").trim();}).filter(Boolean);
+  return rijen;
 }
 
 var BOUW={};
@@ -135,52 +138,81 @@ BOUW.titel=function(s,inh){
   inh.appendChild(mk("h1","titel-kop",s.kop));
   inh.appendChild(mk("p","titel-sub",s.sub));
   inh.appendChild(mk("p","titel-duur","Duur: "+s.duur+" minuten · samen · vrijwillig"));
-  inh.appendChild(mk("p","small","Klaar? Klik op Volgende of druk op de pijl naar rechts."));
+  inh.appendChild(mk("p","small","Klaar? Klik op Start of druk op de pijl naar rechts."));
+};
+BOUW.agenda=function(s,inh){
+  kopblok(s,inh);
+  var ol=mk("ol","agenda");
+  stappen(s.g).forEach(function(r){
+    var li=mk("li"); li.appendChild(mk("span","agenda-naam",r.naam)); li.appendChild(mk("span","time",r.min+" min")); ol.appendChild(li);
+  });
+  inh.appendChild(ol);
+  inh.appendChild(mk("p","instructie","Je hebt nodig:"));
+  inh.appendChild(punten(G.gesprekken[s.g].bij));
 };
 BOUW.uitleg=function(s,inh){
-  inh.appendChild(mk("h1",null,s.kop));
-  if(s.kwVoorbeeld)inh.appendChild(kwVoorbeeld());
-  inh.appendChild(punten(s.punten));
+  kopblok(s,inh);
+  (s.alinea||[]).forEach(function(t){inh.appendChild(mk("p","alinea",t));});
+  if(s.punten)inh.appendChild(punten(s.punten));
+  if(s.kolommen)inh.appendChild(kolommen(s.kolommen));
   if(s.voorbeeld)inh.appendChild(mk("p","vb",s.voorbeeld));
 };
 BOUW.spelregels=function(s,inh){
-  inh.appendChild(mk("h1",null,s.kop));
+  kopblok(s,inh);
   inh.appendChild(punten(s.regels));
+  var b=mk("div","bijdragen"); b.appendChild(mk("p","bijdragen-kop","Zo kun je bijdragen:"));
+  var rij=mk("div","bijdragen-rij"); s.bijdragen.forEach(function(t){rij.appendChild(mk("span","bijdrage",t));}); b.appendChild(rij);
+  inh.appendChild(b);
   inh.appendChild(mk("div","vraag-groot",s.vraag));
 };
+BOUW.bord=function(s,inh){kopblok(s,inh); inh.appendChild(bordEl(s.modus||"uitleg"));};
 BOUW.stap=function(s,inh){
-  inh.appendChild(mk("h1",null,s.kop));
-  inh.appendChild(mk("p","instructie",s.instructie));
-  inh.appendChild(punten(s.punten));
+  kopblok(s,inh);
+  if(s.punten)inh.appendChild(punten(s.punten));
+  if(s.kolommen)inh.appendChild(kolommen(s.kolommen));
   if(s.voorbeeld)inh.appendChild(mk("p","vb",s.voorbeeld));
 };
-BOUW.rondje=function(s,inh){
-  inh.appendChild(mk("h1",null,s.kop));
-  inh.appendChild(mk("p","instructie",s.intro));
-  var z=mk("div","zinnen"); s.zinnen.forEach(function(t){z.appendChild(mk("div","zin-kaart",t));}); inh.appendChild(z);
-  inh.appendChild(punten(s.regels));
+BOUW.kwBouw=function(s,inh){
+  kopblok(s,inh);
+  var wrap=mk("div","kw-bouw"); inh.appendChild(wrap);
+  function teken(){
+    wrap.textContent="";
+    var grid=mk("div","kw-grid kw-groot");
+    s.fases.forEach(function(f,i){
+      var b=mk("div","kw-box "+f.klasse+(i<=st.reveal?"":" verborgen-vak")+(i===st.reveal?" nieuw-vak":""));
+      b.appendChild(mk("b",null,i<=st.reveal?f.titel:"?"));
+      if(i<=st.reveal)b.appendChild(mk("span",null,i===0?"Besluitvaardig":(i===1?"Drammerig":(i===2?"Geduld":"Iemand die niet kan kiezen"))));
+      grid.appendChild(b);
+    });
+    wrap.appendChild(grid);
+    var f=s.fases[st.reveal];
+    wrap.appendChild(mk("p","uitleg-nu",f.titel+": "+f.tekst));
+    var rij=mk("div","btn-row");
+    if(st.reveal<s.fases.length-1){
+      var b=mk("button","btn","Toon het volgende vak"); b.type="button";
+      b.addEventListener("click",function(){st.reveal++; teken();});
+      rij.appendChild(b);
+    }else{rij.appendChild(mk("p","small","Klaar? Ga door met Volgende."));}
+    wrap.appendChild(rij);
+  }
+  teken();
 };
 BOUW.vragen=function(s,inh){
-  inh.appendChild(mk("h1",null,s.kop));
-  inh.appendChild(mk("p","instructie",s.intro));
+  kopblok(s,inh);
   var vraag=mk("div","vraag-groot"); inh.appendChild(vraag);
   var rij=mk("div","btn-row");
   var vorige=mk("button","btn btn-white btn-small","← Vorige vraag"), volgende=mk("button","btn btn-small","Andere vraag →");
   vorige.type="button"; volgende.type="button";
   var stippen=mk("span","stippen");
-  function toon(){
-    vraag.textContent=s.vragen[st.vraag];
-    stippen.textContent=(st.vraag+1)+" van "+s.vragen.length;
-  }
+  function toon(){vraag.textContent=s.vragen[st.vraag]; stippen.textContent=(st.vraag+1)+" van "+s.vragen.length;}
   vorige.addEventListener("click",function(){st.vraag=(st.vraag+s.vragen.length-1)%s.vragen.length; toon();});
   volgende.addEventListener("click",function(){st.vraag=(st.vraag+1)%s.vragen.length; toon();});
   rij.appendChild(vorige); rij.appendChild(volgende); rij.appendChild(stippen); inh.appendChild(rij);
+  if(s.hulp)inh.appendChild(mk("p","hulp",s.hulp));
   toon();
 };
 BOUW.tweetal=function(s,inh,timer){
-  inh.appendChild(mk("h1",null,s.kop));
-  inh.appendChild(mk("p","instructie",s.intro));
-  if(s.kenmerkKiezer)inh.appendChild(kenmerkKiezer());
+  kopblok(s,inh);
   var kaart=mk("div","fase-kaart"); inh.appendChild(kaart);
   function toonFase(auto){
     var f=s.fases[st.fase]; kaart.textContent="";
@@ -188,40 +220,41 @@ BOUW.tweetal=function(s,inh,timer){
     s.fases.forEach(function(_,i){dots.appendChild(mk("span","dot"+(i===st.fase?" nu":(i<st.fase?" klaar":""))));});
     kaart.appendChild(dots);
     kaart.appendChild(mk("p","fase-wie",f.wie));
-    kaart.appendChild(mk("p","fase-tekst",f.tekst));
+    if(f.tekst)kaart.appendChild(mk("p","fase-tekst",f.tekst));
+    if(f.bord)kaart.appendChild(bordEl("kies"));
+    if(f.spreker){
+      var r=mk("div","rollen");
+      var a=mk("div","rol kw-box kw-kern"); a.appendChild(mk("h3",null,f.sprekerKop)); a.appendChild(mk("p",null,f.spreker));
+      var b=mk("div","rol kw-box kw-uitdaging"); b.appendChild(mk("h3",null,f.luisterKop)); b.appendChild(mk("p",null,f.luister));
+      r.appendChild(a); r.appendChild(b); kaart.appendChild(r);
+    }
     var rij=mk("div","btn-row");
     if(st.fase<s.fases.length-1){
-      var b=mk("button","btn btn-small","Volgende fase →"); b.type="button";
-      b.addEventListener("click",function(){st.fase++; toonFase(true);});
-      rij.appendChild(b);
-    }else{
-      rij.appendChild(mk("p","small","Klaar? Ga door met Volgende."));
-    }
+      var n=mk("button","btn btn-small","Volgende fase →"); n.type="button";
+      n.addEventListener("click",function(){st.fase++; toonFase(true);});
+      rij.appendChild(n);
+      rij.appendChild(mk("span","hierna-fase","Hierna: "+s.fases[st.fase+1].wie));
+    }else{rij.appendChild(mk("p","small","Klaar? Ga door met Volgende."));}
     kaart.appendChild(rij);
     timer.zet(f.min,auto);
   }
   toonFase(false);
+  if(s.hulp){var h=mk("div","hulp-kader"); h.appendChild(mk("strong",null,"Lukt het even niet? ")); h.appendChild(document.createTextNode(s.hulp.replace(/^Lukt het even niet\?\s*/,""))); inh.appendChild(h);}
 };
-BOUW.afspraken=function(s,inh){
-  inh.appendChild(mk("h1",null,s.kop));
-  inh.appendChild(mk("p","instructie",s.intro));
-  var ta=document.createElement("textarea"); ta.className="afspraak-tekst"; ta.rows=7; ta.value=st.afspraken;
-  ta.setAttribute("aria-label","Afspraken van het team"); ta.placeholder="Typ hier de afspraken. Eén per regel.";
-  ta.addEventListener("input",function(){st.afspraken=ta.value; window.onbeforeunload=ta.value.trim()?function(){return "Je afspraken zijn nog niet gedownload.";}:null;});
-  inh.appendChild(ta);
-  var vb=mk("div","vb-chips");
-  vb.appendChild(mk("p","small","Voorbeelden. Klik om toe te voegen:"));
-  s.voorbeelden.forEach(function(t){
-    var c=mk("button","btn btn-white btn-small",t); c.type="button";
-    c.addEventListener("click",function(){ta.value+=(ta.value&&!/\n$/.test(ta.value)?"\n":"")+"• "+t+"\n"; st.afspraken=ta.value; ta.dispatchEvent(new Event("input"));});
-    vb.appendChild(c);
-  });
-  inh.appendChild(vb);
-  inh.appendChild(afspraakKnoppen());
+BOUW.rondje=function(s,inh){
+  kopblok(s,inh);
+  var z=mk("div","zinnen"); s.zinnen.forEach(function(t){z.appendChild(mk("div","zin-kaart",t));}); inh.appendChild(z);
+  if(s.menu){var m=mk("div","bijdragen"); m.appendChild(mk("p","bijdragen-kop","Of kies een andere bijdrage:")); var rij=mk("div","bijdragen-rij"); s.menu.forEach(function(t){rij.appendChild(mk("span","bijdrage",t));}); m.appendChild(rij); inh.appendChild(m);}
+  inh.appendChild(punten(s.regels));
 };
+BOUW.pauze=function(s,inh){kopblok(s,inh); inh.appendChild(mk("p","instructie",s.tekst));};
+
 function afspraakTekst(){
-  var g=G.gesprekken[st.g];
-  return g.naam+"\nDatum: "+new Date().toLocaleDateString("nl-NL")+"\n\nAfspraken:\n"+(st.afspraken.trim()||"(nog geen afspraken genoteerd)")+"\n";
+  var g=G.gesprekken[st.g], v=veiligLijst();
+  var t=g.naam+"\nDatum: "+new Date().toLocaleDateString("nl-NL")+"\n\n";
+  t+="Afspraken om het veilig te maken:\n"+(v.length?v.map(function(r){return "• "+r;}).join("\n"):"(geen genoteerd)")+"\n\n";
+  t+="Afspraken van het team:\n"+(st.afspraken.trim()||"(nog geen afspraken genoteerd)")+"\n";
+  return t;
 }
 function afspraakKnoppen(){
   var rij=mk("div","btn-row"), melding=mk("p","msg"); melding.setAttribute("aria-live","polite");
@@ -240,13 +273,32 @@ function afspraakKnoppen(){
     var p=el("printAfspraken"); p.textContent="";
     p.appendChild(mk("h1",null,G.gesprekken[st.g].naam));
     p.appendChild(mk("p",null,"Datum: "+new Date().toLocaleDateString("nl-NL")));
-    p.appendChild(mk("h2",null,"Afspraken"));
-    (st.afspraken.trim()||"(nog geen afspraken genoteerd)").split("\n").forEach(function(r){if(r.trim())p.appendChild(mk("p",null,r));});
+    afspraakTekst().split("\n").slice(3).forEach(function(r){if(r.trim())p.appendChild(mk("p",null,r));});
     window.print();
   });
   rij.appendChild(dl); rij.appendChild(kopie); rij.appendChild(pr);
   var w=mk("div"); w.appendChild(rij); w.appendChild(melding); return w;
 }
+BOUW.afspraken=function(s,inh){
+  kopblok(s,inh);
+  var veld=s.veld==="veilig"?"veilig":"afspraken";
+  var ta=document.createElement("textarea"); ta.className="afspraak-tekst"; ta.rows=6; ta.value=st[veld];
+  ta.setAttribute("aria-label",veld==="veilig"?"Afspraken om het veilig te maken":"Afspraken van het team");
+  ta.placeholder="Typ hier. Eén per regel.";
+  ta.addEventListener("input",function(){
+    st[veld]=ta.value;
+    window.onbeforeunload=(st.afspraken.trim()||st.veilig.trim())?function(){return "Je afspraken zijn nog niet gedownload.";}:null;
+  });
+  inh.appendChild(ta);
+  var vb=mk("div","vb-chips"); vb.appendChild(mk("p","small","Voorbeelden. Klik om toe te voegen:"));
+  s.voorbeelden.forEach(function(t){
+    var c=mk("button","btn btn-white btn-small",t); c.type="button";
+    c.addEventListener("click",function(){ta.value+=(ta.value&&!/\n$/.test(ta.value)?"\n":"")+"• "+t+"\n"; ta.dispatchEvent(new Event("input"));});
+    vb.appendChild(c);
+  });
+  inh.appendChild(vb);
+  if(veld==="afspraken")inh.appendChild(afspraakKnoppen());
+};
 BOUW.einde=function(s,inh){
   inh.appendChild(mk("h1",null,s.kop));
   inh.appendChild(mk("p","instructie","Jullie hebben het gesprek gedaan. Dit zijn jullie afspraken:"));
@@ -254,6 +306,8 @@ BOUW.einde=function(s,inh){
   if(st.afspraken.trim()){st.afspraken.split("\n").forEach(function(r){if(r.trim())k.appendChild(mk("p",null,r));});}
   else{k.appendChild(mk("p",null,"Er zijn geen afspraken genoteerd. Ga eventueel terug naar de afspraken."));}
   inh.appendChild(k);
+  var v=veiligLijst();
+  if(v.length){inh.appendChild(mk("h2","wat-nu","Om het veilig te houden")); inh.appendChild(punten(v));}
   inh.appendChild(mk("h2","wat-nu","Wat nu?"));
   inh.appendChild(punten(["Plan over ongeveer vier weken een check-in van 15 minuten. Vraag: wat is gelukt van onze afspraken?","Neem de afspraken mee naar je volgende teamoverleg.","Gebruik de uitslagen nooit bij beoordeling, werving of promotie."]));
   inh.appendChild(afspraakKnoppen());
@@ -267,9 +321,16 @@ BOUW.einde=function(s,inh){
 
 /* ---------- De gespreksleider ---------- */
 function stopTimer(){if(st.timer){st.timer.stop();st.timer=null;}}
+function hierna(i){
+  var cur=st.slides[i], nxt=st.slides[i+1];
+  if(!nxt)return "";
+  if(nxt.t==="einde")return "Hierna: afronden";
+  if(nxt.stap&&(!cur.stap||nxt.stap!==cur.stap))return "Hierna: stap "+nxt.stap+" · "+nxt.stapNaam;
+  return "Hierna: "+nxt.kop;
+}
 function ga(i){
   if(i<0||i>=st.slides.length)return;
-  stopTimer(); st.i=i; st.fase=0; st.vraag=0; st.kies=null;
+  stopTimer(); st.i=i; st.fase=0; st.vraag=0; st.reveal=0;
   var s=st.slides[i], g=G.gesprekken[st.g], slide=el("slide");
   slide.textContent=""; slide.className="slide";
   var inh=mk("div","slide-inhoud"); slide.appendChild(inh);
@@ -279,27 +340,63 @@ function ga(i){
     slide.classList.add("heeft-timer");
     timer=maakTimer(s.t==="tweetal"?s.fases[0].min:slideMin(s)); st.timer=timer;
     var zij=mk("div","slide-zij"); zij.appendChild(timer.el);
-    if(slideMin(s)){zij.appendChild(mk("p","small","Totaal voor deze stap: "+slideMin(s)+" min"));}
+    zij.appendChild(mk("p","small","Totaal voor dit onderdeel: "+slideMin(s)+" min"));
     slide.appendChild(zij);
   }
   slide.classList.add("t-"+s.t);
   BOUW[s.t](s,inh,timer);
+  var h=hierna(i); if(h&&s.t!=="titel")inh.appendChild(mk("p","hierna",h));
 
-  // balk bovenin
   var aantalStappen=stappen(st.g).length;
   el("deckTitel").textContent=g.naam;
   el("deckStap").textContent=s.stap?("Stap "+s.stap+" van "+aantalStappen+" · "+s.stapNaam):"";
   var prog=el("deckProg"); prog.textContent="";
   st.slides.forEach(function(_,k){prog.appendChild(mk("span","seg"+(k<i?" klaar":(k===i?" nu":""))));});
-  el("tips").textContent=s.tip?("Tip voor jou: "+s.tip):"";
   el("dVorige").disabled=i===0;
   el("dVolgende").disabled=i===st.slides.length-1;
   el("dVolgende").textContent=i===0?"Start →":"Volgende →";
   try{window.history.replaceState(null,"",window.location.pathname+"#g="+st.g+"&s="+i);}catch(e){}
-  slide.scrollTop=0; el("deck").querySelector(".deck-main").scrollTop=0;
+  el("deck").querySelector(".deck-main").scrollTop=0;
+  if(st.paneel)paneelVul(st.paneel);
 }
+
+/* Panelen: tips, spelregels en naslag */
+function paneelVul(soort){
+  var p=el("paneel"), s=st.slides[st.i]; p.textContent="";
+  var kop=mk("div","paneel-kop"); var x=mk("button","chip-x","×"); x.type="button"; x.setAttribute("aria-label","Sluit");
+  x.addEventListener("click",function(){paneelToon(soort);});
+  if(soort==="tips"){
+    kop.appendChild(mk("strong",null,"Tips voor jou als gespreksleider")); kop.appendChild(x); p.appendChild(kop);
+    p.appendChild(mk("p",null,s.tip||"Geen tip bij dit scherm."));
+    if(s.faq&&s.faq.length){
+      p.appendChild(mk("p","paneel-sub","Vragen die je kunt krijgen"));
+      s.faq.forEach(function(q){var d=mk("div","faq"); d.appendChild(mk("strong",null,q[0])); d.appendChild(mk("span",null,q[1])); p.appendChild(d);});
+    }
+  }else if(soort==="regels"){
+    kop.appendChild(mk("strong",null,"Onze spelregels")); kop.appendChild(x); p.appendChild(kop);
+    p.appendChild(punten(G.regels));
+    var v=veiligLijst();
+    if(v.length){p.appendChild(mk("p","paneel-sub","Wat jullie nog nodig hebben")); p.appendChild(punten(v));}
+  }else{
+    kop.appendChild(mk("strong",null,"Naslag")); kop.appendChild(x); p.appendChild(kop);
+    var heeftTalent=st.g!=="kwadranten", heeftKw=st.g!=="talenten";
+    if(heeftTalent){p.appendChild(mk("p","paneel-sub","De vijf kenmerken")); p.appendChild(bordEl("kies"));}
+    if(heeftKw){p.appendChild(mk("p","paneel-sub","Het kernkwadrant")); p.appendChild(kwadrantUitleg());}
+  }
+}
+function paneelToon(soort){
+  var p=el("paneel");
+  st.paneel=(st.paneel===soort)?null:soort;
+  p.classList.toggle("hide",!st.paneel);
+  ["Tips","Regels","Naslag"].forEach(function(n){
+    var b=el("d"+n), actief=(n==="Tips"&&st.paneel==="tips")||(n==="Regels"&&st.paneel==="regels")||(n==="Naslag"&&st.paneel==="naslag");
+    b.setAttribute("aria-pressed",actief?"true":"false");
+  });
+  if(st.paneel)paneelVul(st.paneel);
+}
+
 function openDeck(k,i,herstel){
-  st.g=k; st.slides=G.gesprekken[k].slides; st.start=Date.now();
+  st.g=k; st.slides=G.gesprekken[k].slides; st.start=Date.now(); st.paneel=null; el("paneel").classList.add("hide");
   el("deck").classList.remove("hide"); document.body.classList.add("deck-open");
   if(!herstel){schermAan();}
   try{if(navigator.wakeLock){navigator.wakeLock.request("screen").then(function(w){st.wake=w;},function(){});}}catch(e){}
@@ -312,7 +409,7 @@ function openDeck(k,i,herstel){
   el("dVolgende").focus();
 }
 function sluitDeck(vraag){
-  if(vraag&&st.afspraken.trim()&&!window.confirm("Weet je het zeker? Je afspraken zijn misschien nog niet gedownload.")){return;}
+  if(vraag&&(st.afspraken.trim()||st.veilig.trim())&&!window.confirm("Weet je het zeker? Je afspraken zijn misschien nog niet gedownload.")){return;}
   stopTimer(); clearInterval(st.tick); st.tick=null;
   el("deck").classList.add("hide"); document.body.classList.remove("deck-open");
   window.onbeforeunload=null;
@@ -332,10 +429,6 @@ function schermWissel(){
     else if(d.requestFullscreen){var p=d.requestFullscreen(); if(p&&p.catch)p.catch(function(){});}
   }catch(e){}
 }
-function tipsWissel(){
-  st.tips=!st.tips; el("tips").classList.toggle("hide",!st.tips||!el("tips").textContent);
-  el("dTips").setAttribute("aria-pressed",st.tips?"true":"false");
-}
 function geluidWissel(){
   st.geluid=!st.geluid; el("dGeluid").textContent=st.geluid?"Geluid aan":"Geluid uit";
   el("dGeluid").setAttribute("aria-pressed",st.geluid?"true":"false");
@@ -350,7 +443,9 @@ function rust(){
 el("startKnop").addEventListener("click",function(){if(st.g)openDeck(st.g,0);});
 el("dVorige").addEventListener("click",function(){ga(st.i-1);});
 el("dVolgende").addEventListener("click",function(){ga(st.i+1);});
-el("dTips").addEventListener("click",tipsWissel);
+el("dTips").addEventListener("click",function(){paneelToon("tips");});
+el("dRegels").addEventListener("click",function(){paneelToon("regels");});
+el("dNaslag").addEventListener("click",function(){paneelToon("naslag");});
 el("dGeluid").addEventListener("click",geluidWissel);
 el("dScherm").addEventListener("click",schermWissel);
 el("dStop").addEventListener("click",function(){sluitDeck(true);});
@@ -365,12 +460,15 @@ document.addEventListener("keydown",function(e){
   if(k==="ArrowRight"||k==="PageDown"){e.preventDefault(); ga(st.i+1);}
   else if(k==="ArrowLeft"||k==="PageUp"){e.preventDefault(); ga(st.i-1);}
   else if(k===" "&&tag!=="BUTTON"){e.preventDefault(); ga(st.i+1);}
-  else if(k==="n"||k==="N"){tipsWissel();}
+  else if(k==="n"||k==="N"){paneelToon("tips");}
+  else if(k==="s"||k==="S"){paneelToon("regels");}
+  else if(k==="k"||k==="K"){paneelToon("naslag");}
   else if(k==="f"||k==="F"){schermWissel();}
   else if(k==="t"||k==="T"){if(st.timer)st.timer.wissel();}
+  else if(k==="Escape"&&st.paneel){paneelToon(st.paneel);}
 });
 
-// naslag onderaan
+// naslag onderaan de pagina
 (function(){
   var w=el("vragenLijst");
   T.VOLGORDE.forEach(function(d){
