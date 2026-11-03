@@ -73,3 +73,8 @@ Lokaal bekijken: `python -m http.server 8765` in deze map en open `http://localh
 ## Koppelscherm en iPad
 - Met live meedoen aan begint het gesprek met een koppelscherm: QR-code, code en een teller. Iedereen scant en tikt op 'Ik ben er'. Het scherm toont hoeveel telefoons gekoppeld zijn. Daarna begint het gesprek met 'Begin het gesprek'. De telefoonpagina probeert het scherm aan te houden.
 - De gespreksleider meet de echte zichtbare hoogte (visualViewport) in plaats van 100vh, omdat op iPad en telefoon de werkbalken van de browser een deel van het scherm innemen. Na het schalen controleert `controleerPast()` altijd nog of er echt niets wegvalt en verkleint zo nodig verder.
+
+## Publiceren (belangrijk)
+- Draai **voor elke publicatie** `python tools/stempel.py`. Dat zet `?v=<tijd>` achter elke css/js-verwijzing en een leesbaar versienummer onderaan elke pagina. GitHub Pages laat de browser bestanden 10 minuten bewaren. Zonder versienummer kan een iPad of telefoon een oude versie blijven tonen. Onderaan elke pagina staat 'Versie ...', zodat je kunt zien welke versie je ziet.
+- Een link met `#g=...&s=...` of herladen tijdens een gesprek opent eerst het keuzescherm met de knop 'Ga verder bij dit scherm'. Zo kun je live meedoen opnieuw aanzetten (met een nieuwe code en opnieuw koppelen). Live meedoen wordt nooit stilzwijgend uitgezet op een scherm waar het hoort.
+- Live: de lijst met openbare Nostr-servers staat in `assets/live.js` (`RELAYS`). Drie van de 29 standaardservers van de bibliotheek waren onbereikbaar (gemeten op 3 nov 2026), dus we gebruiken een eigen lijst van 8 werkende servers.

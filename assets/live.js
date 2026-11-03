@@ -1,7 +1,7 @@
 /* Live meedoen: rechtstreekse verbinding tussen het scherm van de gespreksleider en de telefoons.
    Gebruikt Trystero (open bron, MIT). Alleen het opzetten van de verbinding loopt via openbare diensten;
    de antwoorden zelf gaan rechtstreeks van telefoon naar scherm en worden nergens bewaard. */
-import {joinRoom, selfId, maakQR} from "./vendor/live-lib.js";
+import {joinRoom, selfId, maakQR} from "./vendor/live-lib.js?v=202611032346";
 
 var APP_ID="mijn-talenten-live-v1";
 var ALFABET="ABCDEFGHJKMNPQRSTUVWXYZ23456789"; // zonder tekens die op elkaar lijken
@@ -13,7 +13,12 @@ export function maakCode(){
   return Array.from(b,function(x){return ALFABET[x%ALFABET.length];}).join("");
 }
 export function geldigeCode(c){return /^[A-HJKMNP-Z2-9]{8}$/.test(c||"");}
-function kamer(code){return joinRoom({appId:APP_ID,password:code},code);}
+// Openbare Nostr-servers die alleen helpen bij het opzetten van de verbinding. De eerste vier zijn
+// de standaardkeuze van de bibliotheek voor deze app (zonder de server die niet meer bereikbaar is),
+// de rest is extra. Zo vinden oudere en nieuwere versies van de pagina elkaar nog.
+var RELAYS=["wss://nostrcity-club.fly.dev","wss://nos.lol","wss://nostr.stakey.net","wss://relay.aarpia.com",
+  "wss://nostr.chaima.info","wss://bendernostur.duckdns.org:8443","wss://cdn.satellite.earth","wss://nostr.rblb.it"];
+function kamer(code){return joinRoom({appId:APP_ID,password:code,relayConfig:{urls:RELAYS}},code);}
 function stuur(actie,data,doel){
   try{var p=actie.send(data,doel?{target:doel}:undefined); if(p&&p.catch)p.catch(function(){});}catch(e){}
 }

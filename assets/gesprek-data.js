@@ -45,11 +45,11 @@ function spelregels(){return {t:"spelregels",stap:1,stapNaam:"Welkom en spelrege
   waarom:"Zo weet iedereen waar hij aan toe is.",
   tip:"Lees de regels hardop voor. Vraag echt om een ja van iedereen. Benadruk: meedoen is niet hetzelfde als iets over jezelf vertellen.",
   faq:[["Moet ik iets over mezelf vertellen?","Nee. Een vraag stellen, iets waarderends zeggen of goed luisteren is ook meedoen."],["Wat als ik mijn uitslag niet herken?","Prima. Zeg dat. Dat is ook een bijdrage."]]};}
-function veiligheid(){return {t:"afspraken",veld:"veilig",live:{soort:"tekst",vraag:"Wat heb je nodig om veilig genoeg mee te doen?",hint:"Schrijf één ding. Het is anoniem. Je mag ook passen.",max:2,neemOver:"veilig"},stap:1,stapNaam:"Welkom en spelregels",min:3,kop:"Wat heb je nodig om veilig genoeg mee te doen?",
+function veiligheid(){return {t:"afspraken",veld:"veilig",liveRegel:"Typ op je telefoon één afspraak die voor jou helpt. Het is anoniem. De gespreksleider zet de afspraken op de lijst.",live:{soort:"tekst",vraag:"Wat heb je nodig om veilig genoeg mee te doen?",hint:"Schrijf één ding. Het is anoniem. Je mag ook passen.",max:2,neemOver:"veilig"},stap:1,stapNaam:"Welkom en spelregels",min:3,kop:"Wat heb je nodig om veilig genoeg mee te doen?",
   intro:"Denk even na. Noem één afspraak die voor jou helpt. De gespreksleider schrijft ze op.",
   voorbeelden:["We onderbreken elkaar niet.","Je mag altijd passen.","Niemand geeft ongevraagd advies.","We stoppen even als iemand dat nodig heeft.","Geen namen van mensen die er niet bij zijn."],
   waarom:"Wat voor de één veilig voelt, voelt voor de ander misschien niet zo. Samen maken we het veilig genoeg.",
-  tip:"Vraag het rond en schrijf mee. Dring niet aan: wie niets noemt, is ook goed. Je kunt de lijst later bekijken met de knop Spelregels (S).",
+  tip:"Vraag het rond en schrijf mee. Met live meedoen verschijnen voorstellen van de telefoons hieronder: neem ze over met Naar afspraken. Dring niet aan: wie niets noemt, is ook goed. Je kunt de lijst later bekijken met de knop Spelregels (S).",
   faq:[["Wat als niemand iets zegt?","Noem zelf één voorbeeld uit de lijst en vraag of iedereen daar mee kan leven."],["Mag ik het later nog aanvullen?","Ja. Zeg het gerust tijdens het gesprek."]]};}
 
 /* ---- Theorie en eigen uitslag, talenten ---- */
@@ -67,13 +67,13 @@ var TH_TALENT=[
    waarom:"Zo kun je straks zeggen waar jij op zit.",
    tip:"Loop de vijf kenmerken kort langs. Laat mensen zien dat beide kanten een talent zijn.",
    faq:[["Wat betekent ‘emotionele stabiliteit’?","Dat is hier ‘omgaan met spanning’. Hoger is kalm blijven, lager is gevoelig en alert."]]},
-  {t:"stap",stap:2,stapNaam:"Theorie en je eigen uitslag",min:3,kop:"Jouw uitslag",live:{soort:"keuze",vraag:"Welk kenmerk valt bij jou het meest op?",opties:T.VOLGORDE.map(function(d){return T.DOMEINEN[d].naam;})},
+  {t:"stap",stap:2,stapNaam:"Theorie en je eigen uitslag",min:3,kop:"Jouw uitslag",liveRegel:"Kies daarna op je telefoon welk kenmerk bij jou het meest opvalt.",live:{soort:"keuze",vraag:"Welk kenmerk valt bij jou het meest op?",opties:T.VOLGORDE.map(function(d){return T.DOMEINEN[d].naam;})},
    instructie:"Open je eigen uitslag. Zoek het kenmerk waar je het verst van het midden zit.",
    punten:["Open je uitslag op je telefoon of kijk op papier.","Zoek het kenmerk waar je het hoogst of laagst scoort.","Bedenk één voorbeeld uit je leven waarin je dat merkt. Het mag ook buiten je werk zijn.","Je hoeft dit straks niet te delen."],
    waarom:"Zo heb je zo meteen een voorbeeld om over te praten.",
    tip:"Het is stil in de ruimte. Wie geen uitslag heeft, kan de test nu doen of meekijken met een buur.",
    faq:[["Ik zit overal in het midden, wat nu?","Kies het kenmerk waar je het meest aarzelt. Of kies een kenmerk waarover je graag wilt praten."],["Ik herken mijn uitslag niet.","Dan kun je dat zeggen. Dat is een goed gespreksonderwerp."]]},
-  {t:"vragen",stap:2,stapNaam:"Theorie en je eigen uitslag",min:3,kop:"Herken je dit?",live:{soort:"schaal",vraag:"Herken je jouw uitslag?",labels:["Helemaal niet","Helemaal wel"]},
+  {t:"vragen",stap:2,stapNaam:"Theorie en je eigen uitslag",min:3,kop:"Herken je dit?",liveRegel:"Geef op je telefoon een cijfer van 1 tot 5.",live:{soort:"schaal",vraag:"Herken je jouw uitslag?",labels:["Helemaal niet","Helemaal wel"]},
    intro:"Even in de groep. Eén vraag tegelijk.",
    vragen:["Herken je je uitslag? Steek je duim op, opzij of omlaag.","Wie wil een voorbeeld delen waarin je dat kenmerk merkt? Het mag ook uit je vrije tijd.","Wat verraste je?"],
    hulp:"Wil niemand beginnen? De gespreksleider begint. Passen mag.",
@@ -105,7 +105,7 @@ function thKwadrant(stap,naam){return [
    waarom:"Zo heb je zo meteen een voorbeeld om over te praten.",
    tip:"Wie zijn kwadranten niet bij zich heeft, kan ze op de telefoon maken. Dat kost ongeveer tien minuten, dus liever vooraf laten doen.",
    faq:[["Mijn kwadrant past niet goed.","Dat kan. Pas het in je hoofd aan of vertel waar het niet klopt."]]},
-  {t:"vragen",stap:stap,stapNaam:naam,min:2,kop:"Herken je dit?",live:{soort:"schaal",vraag:"Herken je dit uit je eigen werk of leven?",labels:["Helemaal niet","Helemaal wel"]},
+  {t:"vragen",stap:stap,stapNaam:naam,min:2,kop:"Herken je dit?",liveRegel:"Geef op je telefoon een cijfer van 1 tot 5.",live:{soort:"schaal",vraag:"Herken je dit uit je eigen werk of leven?",labels:["Helemaal niet","Helemaal wel"]},
    intro:"Even in de groep. Eén vraag tegelijk.",
    vragen:["Herken je dit? Steek je duim op, opzij of omlaag.","Wie wil een voorbeeld delen van een valkuil of een allergie? Het mag ook uit je vrije tijd.","Wat verraste je?"],
    hulp:"Wil niemand beginnen? De gespreksleider begint. Passen mag.",
@@ -173,19 +173,19 @@ function tweeKwadrant(stap,naam){return {t:"tweetal",stap:stap,stapNaam:naam,kop
   faq:[["Moet ik een collega noemen?","Nee. Geen namen. Beschrijf alleen het gedrag."],["Wat als ik me nergens aan irriteer?","Kies een situatie buiten werk, of iets dat je soms stoort."],["Wie is A?","Jullie kiezen zelf. A begint."]]};}
 
 /* ---- Met het hele team ---- */
-function rondje(stap,naam,min,kop,zinnen){return {t:"rondje",stap:stap,stapNaam:naam,min:min,kop:kop,live:{soort:"tekst",vraag:"Kies een zin en maak hem af",hint:zinnen.join("   ·   ")+"  (Anoniem. De gespreksleider leest voor. Passen mag.)",max:2},
+function rondje(stap,naam,min,kop,zinnen){return {t:"rondje",stap:stap,stapNaam:naam,min:min,kop:kop,liveRegel:"Typ je zin op je telefoon. Het is anoniem en je mag ook passen. De gespreksleider leest de antwoorden voor.",live:{soort:"tekst",vraag:"Kies een zin en maak hem af",hint:zinnen.join("   ·   ")+"  (Anoniem. De gespreksleider leest voor. Passen mag.)",max:2},
   intro:"Iedereen draagt één ding bij. Eén persoon tegelijk. Kies een zin op het scherm, of kies een andere bijdrage.",zinnen:zinnen,
   menu:["Ik pas.","Ik stel een vraag aan het team.","Ik noem iets wat ik waardeer in ons team."],
   regels:["De anderen luisteren. Niet reageren.","Zeg na elke persoon alleen: bedankt."],
   waarom:"Zo hoort iedereen iets van elkaar, zonder discussie.",
-  tip:"Begin zelf. Houd het kort. Reken ongeveer een minuut per persoon. Het scherm toont de tijd. Wie past, past. Dat is ook een bijdrage.",
+  tip:"Begin zelf. Houd het kort. Reken ongeveer een minuut per persoon. Het scherm toont de tijd. Wie past, past. Dat is ook een bijdrage. Met live meedoen lees je de antwoorden van de telefoons voor.",
   faq:[["Moet ik iets over mezelf zeggen?","Nee. Je mag ook passen, een vraag stellen of iets waarderends zeggen."],["Mag ik reageren op een ander?","Nu nog niet. Zeg alleen bedankt. Reageren kan straks."]]};}
-function vragenSlide(stap,naam,min,kop,vragen){return {t:"vragen",stap:stap,stapNaam:naam,min:min,kop:kop,intro:"Praat samen. Kies een vraag.",vragen:vragen,live:{soort:"keuze",vraag:"Welke vraag wil je het eerst bespreken?",opties:vragen},
+function vragenSlide(stap,naam,min,kop,vragen){return {t:"vragen",stap:stap,stapNaam:naam,min:min,kop:kop,intro:"Praat samen. Kies een vraag.",vragen:vragen,liveRegel:"Kies op je telefoon welke vraag je het eerst wilt bespreken.",live:{soort:"keuze",vraag:"Welke vraag wil je het eerst bespreken?",opties:vragen},
   waarom:"Zo gebruiken we wat we net hoorden.",tip:"Laat het gesprek vrij lopen. Vraag door met: kun je een voorbeeld geven? Gebruik Andere vraag als het stilvalt.",
   hulp:"Stilte mag. Wacht even voordat je een nieuwe vraag kiest."};}
-function afspraken(stap,min,voorbeelden,intro){return {t:"afspraken",veld:"team",live:{soort:"tekst",vraag:"Welke afspraak stel jij voor?",hint:"Kort en klein. Het team kiest straks. Anoniem.",max:2,neemOver:"team"},stap:stap,stapNaam:"Afspraken",min:min,kop:"Afspraken",intro:intro,voorbeelden:voorbeelden,
+function afspraken(stap,min,voorbeelden,intro){return {t:"afspraken",veld:"team",liveRegel:"Stel op je telefoon een afspraak voor. De gespreksleider zet de afspraken die passen in de lijst.",live:{soort:"tekst",vraag:"Welke afspraak stel jij voor?",hint:"Kort en klein. Het team kiest straks. Anoniem.",max:2,neemOver:"team"},stap:stap,stapNaam:"Afspraken",min:min,kop:"Afspraken",intro:intro,voorbeelden:voorbeelden,
   waarom:"Een gesprek helpt pas als er iets verandert. Kleine afspraken werken het best.",
-  tip:"Houd het klein: één of twee afspraken die morgen kunnen beginnen. Typ ze hier in, dan staan ze op het scherm. Download ze voor je afsluit.",
+  tip:"Houd het klein: één of twee afspraken die morgen kunnen beginnen. Typ ze hier in, of neem voorstellen van de telefoons over met Naar afspraken. Download ze voor je afsluit.",
   faq:[["Moet iedereen een eigen afspraak hebben?","Nee. Eén of twee afspraken voor het team is genoeg."],["Wat als we het niet eens zijn?","Kies de afspraak waar iedereen mee kan leven. Kleiner is beter."]]};}
 function pauze(stap){return {t:"pauze",stap:stap,stapNaam:"Pauze",min:5,kop:"Pauze",
   tekst:"Pak iets te drinken. Loop even rond. Straks gaan we verder met de kernkwadranten.",

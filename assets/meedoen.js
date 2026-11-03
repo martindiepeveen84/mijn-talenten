@@ -1,5 +1,5 @@
 /* Meedoen vanaf je telefoon: anoniem antwoorden op de vragen van de gespreksleider. Niets wordt bewaard. */
-import {startDeelnemer, geldigeCode} from "./live.js";
+import {startDeelnemer, geldigeCode} from "./live.js?v=202611032346";
 
 function el(id){return document.getElementById(id);}
 function maak(tag,klasse,tekst){var e=document.createElement(tag); if(klasse)e.className=klasse; if(tekst!==undefined)e.textContent=tekst; return e;}

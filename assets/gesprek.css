@@ -146,7 +146,10 @@
 .live-kaart .btn{font-size:.7em}
 
 /* Koppelscherm */
-.t-koppelen .qr-svg{width:min(10em,38vh)}
+.t-koppelen .qr-svg{width:min(9em,38vh)}
+.koppel-rij{display:flex;gap:1em;align-items:center;flex-wrap:wrap;margin:.5em 0}
+.koppel-tekst{flex:1;min-width:13em}
+.koppel-tekst ul{font-size:.9em;margin:.2em 0}
 .live-aanwezig{margin:.2em 0}
 .live-groot{font-size:1.5em;font-weight:800;margin:.1em 0 .3em}
 .live-aanwezig.allemaal .live-vul{background:var(--yellow)}
@@ -163,3 +166,7 @@
 .tel-sub{font-size:.62em;font-weight:600;margin:.25em 0 0;line-height:1.2}
 @keyframes tel-wiebel{0%,68%,100%{transform:rotate(0)}74%{transform:rotate(-9deg)}80%{transform:rotate(9deg)}86%{transform:rotate(-6deg)}92%{transform:rotate(4deg)}}
 @media (prefers-reduced-motion:reduce){.tel-groot .tel-ico{animation:none}}
+
+/* Uitleg die alleen bij live meedoen verschijnt */
+.slide .live-regel{display:flex;gap:.45em;align-items:flex-start;font-size:.8em;font-weight:700;background:var(--yellow);border:.08em solid var(--ink);border-radius:.5em;padding:.3em .7em;margin:.3em 0 .6em}
+.slide .live-regel .tel-ico{margin-top:.1em}

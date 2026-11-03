@@ -4,7 +4,7 @@
 "use strict";
 var T=window.TALENT, K=window.KWADRANT, G=window.GESPREK, mk=window.UI.maakEl;
 function el(id){return document.getElementById(id);}
-var st={g:null,i:0,slides:[],afspraken:"",veilig:"",geluid:false,paneel:null,start:0,timer:null,tick:null,idle:null,wake:null,fase:0,vraag:0,reveal:0,live:{aan:false}};
+var st={g:null,i:0,slides:[],afspraken:"",veilig:"",geluid:false,paneel:null,start:0,timer:null,tick:null,idle:null,wake:null,fase:0,vraag:0,reveal:0,hervat:null,live:{aan:false}};
 
 /* ---------- Hulpjes ---------- */
 function pad(n){return (n<10?"0":"")+n;}
@@ -101,6 +101,7 @@ function kopblok(s,inh){
   if(s.intro)inh.appendChild(mk("p","instructie",s.intro));
   if(s.instructie)inh.appendChild(mk("p","instructie",s.instructie));
   if(s.waarom){var w=mk("p","waarom"); w.appendChild(mk("strong",null,"Waarom: ")); w.appendChild(document.createTextNode(s.waarom)); inh.appendChild(w);}
+  if(st.live&&st.live.aan&&s.liveRegel){var lr=mk("p","live-regel"); lr.appendChild(telIcoon()); lr.appendChild(mk("span",null,s.liveRegel)); inh.appendChild(lr);}
 }
 function kolommen(lijst){
   var g=mk("div","kolommen");
@@ -152,8 +153,15 @@ BOUW.agenda=function(s,inh){
 };
 BOUW.koppelen=function(s,inh){
   kopblok(s,inh);
-  inh.appendChild(qrBlok());
-  inh.appendChild(punten(s.stappen));
+  var rij=mk("div","koppel-rij");
+  rij.appendChild(qrSvg(liveUrl()));
+  var t=mk("div","koppel-tekst");
+  t.appendChild(mk("p","qr-code",st.live.code));
+  t.appendChild(mk("p","small qr-url",liveUrl().replace(/#.*$/,"")));
+  var tel=mk("p","qr-tel"); tel.setAttribute("data-live-tel","1"); t.appendChild(tel);
+  t.appendChild(punten(s.stappen));
+  rij.appendChild(t); inh.appendChild(rij);
+  liveTelTekst();
   if(s.hulp)inh.appendChild(mk("p","hulp-kader",s.hulp));
 };
 BOUW.uitleg=function(s,inh){
@@ -452,7 +460,7 @@ function liveVernieuw(){
   var aantal=Object.keys(reageerders).length;
   var kop=mk("div","live-kop");
   var kopTitel=mk("strong"); kopTitel.appendChild(telIcoon()); kopTitel.appendChild(document.createTextNode(" Live op telefoons")); kop.appendChild(kopTitel);
-  kop.appendChild(mk("span","live-tel",aantal+" van "+L.peers+" hebben gereageerd"));
+  kop.appendChild(mk("span","live-tel",aantal+" van "+L.peers+(aantal===1?" heeft":" hebben")+" gereageerd"));
   var wissel=mk("button","btn btn-white btn-small",q.open?"Sluit antwoorden":"Open antwoorden"); wissel.type="button";
   wissel.addEventListener("click",function(){q.open=!q.open; sendQ(i); liveVernieuw();});
   kop.appendChild(wissel); k.appendChild(kop);
@@ -470,7 +478,7 @@ function liveVernieuw(){
   if(l.soort==="aanwezig"){
     var klaar=Object.keys(q.antw).length, allemaal=L.peers>0&&klaar>=L.peers;
     var gr=mk("div","live-aanwezig"+(allemaal?" allemaal":""));
-    gr.appendChild(mk("p","live-groot",allemaal?"Iedereen is gekoppeld ✓ ("+klaar+")":klaar+" van "+L.peers+" telefoons gekoppeld"));
+    gr.appendChild(mk("p","live-groot",allemaal?"Iedereen is gekoppeld ✓ ("+klaar+")":klaar+" van "+L.peers+(L.peers===1?" telefoon":" telefoons")+" gekoppeld"));
     var bl=mk("span","live-balk"), vl=mk("span","live-vul"); vl.style.width=(L.peers?Math.min(100,klaar/L.peers*100):0)+"%"; bl.appendChild(vl); gr.appendChild(bl);
     k.appendChild(gr);
   }else if(l.soort==="schaal"){
@@ -543,7 +551,7 @@ function ga(i){
   st.slides.forEach(function(_,k){prog.appendChild(mk("span","seg"+(k<i?" klaar":(k===i?" nu":""))));});
   el("dVorige").disabled=i===0;
   el("dVolgende").disabled=i===st.slides.length-1;
-  el("dVolgende").textContent=s.t==="koppelen"?"Begin het gesprek →":(i===0?"Start →":"Volgende →");
+  el("dVolgende").textContent=s.t==="koppelen"?(st.hervat?"Ga verder →":"Begin het gesprek →"):(i===0?"Start →":"Volgende →");
   try{window.history.replaceState(null,"",window.location.pathname+"#g="+st.g+"&s="+Math.max(0,i-(st.live&&st.live.aan?1:0)));}catch(e){}
   el("deck").querySelector(".deck-main").scrollTop=0;
   pasOp();
@@ -691,7 +699,12 @@ el("startKnop").addEventListener("click",function(){
   openDeck(st.g,0);
 });
 el("dVorige").addEventListener("click",function(){ga(st.i-1);});
-el("dVolgende").addEventListener("click",function(){ga(st.i+1);});
+function volgende(){
+  var s=st.slides[st.i];
+  if(s&&s.t==="koppelen"&&st.hervat){var doel=st.hervat; st.hervat=null; ga(doel);}
+  else{ga(st.i+1);}
+}
+el("dVolgende").addEventListener("click",volgende);
 el("dTips").addEventListener("click",function(){paneelToon("tips");});
 el("dRegels").addEventListener("click",function(){paneelToon("regels");});
 el("dNaslag").addEventListener("click",function(){paneelToon("naslag");});
@@ -707,9 +720,9 @@ document.addEventListener("keydown",function(e){
   if(tag==="TEXTAREA"||tag==="INPUT")return;
   if(e.ctrlKey||e.metaKey||e.altKey)return;
   var k=e.key;
-  if(k==="ArrowRight"||k==="PageDown"){e.preventDefault(); ga(st.i+1);}
+  if(k==="ArrowRight"||k==="PageDown"){e.preventDefault(); volgende();}
   else if(k==="ArrowLeft"||k==="PageUp"){e.preventDefault(); ga(st.i-1);}
-  else if(k===" "&&tag!=="BUTTON"){e.preventDefault(); ga(st.i+1);}
+  else if(k===" "&&tag!=="BUTTON"){e.preventDefault(); volgende();}
   else if(k==="n"||k==="N"){paneelToon("tips");}
   else if(k==="s"||k==="S"){paneelToon("regels");}
   else if(k==="k"||k==="K"){paneelToon("naslag");}
@@ -734,8 +747,21 @@ document.addEventListener("keydown",function(e){
 renderKeuzes();
 var m=/^#g=(talenten|kwadranten|combi)&s=(\d+)$/.exec(window.location.hash);
 if(m&&G.gesprekken[m[1]]){
-  var n=parseInt(m[2],10);
+  var n=parseInt(m[2],10), lijst=G.gesprekken[m[1]].slides;
   kies(m[1]);
-  if(n>=0&&n<G.gesprekken[m[1]].slides.length){openDeck(m[1],n,true);}
+  if(n>=0&&n<lijst.length){
+    var sl=lijst[n], doos=mk("div","card hervat");
+    doos.appendChild(mk("h3",null,"Je was bij een eerder gesprek"));
+    doos.appendChild(mk("p",null,"Je was bij het scherm ‘"+sl.kop+"’"+(sl.stap?" (stap "+sl.stap+" van "+stappen(m[1]).length+")":"")+". Wil je daar verder? Vink hieronder eventueel live meedoen aan. De telefoons moeten dan opnieuw de QR-code scannen."));
+    var knop=mk("button","btn","Ga verder bij dit scherm"); knop.type="button";
+    knop.addEventListener("click",function(){
+      var live=el("liveAan").checked;
+      if(live&&!startLive())return;
+      st.hervat=live?n+1:null;
+      openDeck(m[1],live?0:n);
+    });
+    var rij=mk("div","btn-row"); rij.appendChild(knop); doos.appendChild(rij);
+    var start=el("startKnop").parentNode; start.parentNode.insertBefore(doos,start);
+  }
 }
 })();
