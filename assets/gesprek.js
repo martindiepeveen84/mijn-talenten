@@ -363,6 +363,15 @@ function telIcoon(){
   var c=document.createElementNS(NS,"circle"); c.setAttribute("cx","12"); c.setAttribute("cy","18.4"); c.setAttribute("r","1.15"); c.setAttribute("fill","currentColor");
   svg.appendChild(r); svg.appendChild(c); return svg;
 }
+// Groot blok onder de timer: "Pak je telefoon", met wat je daar moet doen
+function telBlok(s){
+  var b=mk("div","tel-groot"), l=s.live;
+  b.appendChild(telIcoon());
+  b.appendChild(mk("p","tel-kop","Pak je telefoon"));
+  var tekst=s.t==="koppelen"?"Scan de QR-code en tik op ‘Ik ben er’":(l.soort==="tekst"?"en typ je antwoord":(l.soort==="keuze"?"en kies je antwoord":(l.soort==="schaal"?"en geef een cijfer van 1 tot 5":"en tik op ‘Ik ben er’")));
+  b.appendChild(mk("p","tel-sub",tekst));
+  return b;
+}
 // Het aantal deelnemers staat altijd in de bovenbalk, ook bij 0
 function topLive(){
   var d=el("deckLive"); if(!d)return;
@@ -411,12 +420,6 @@ function liveSlide(s,i,inh){
   var vorige=L.actief;
   if(vorige!==null&&vorige!==i&&L.v[vorige])L.v[vorige].open=false;
   L.kader=null;
-  if(s.live){
-    var kopEl=inh.querySelector("h1"), badge=mk("p","tel-badge");
-    badge.appendChild(telIcoon());
-    badge.appendChild(document.createTextNode(s.t==="koppelen"?"Koppel je telefoon":"Antwoord op je telefoon"));
-    if(kopEl&&kopEl.nextSibling){inh.insertBefore(badge,kopEl.nextSibling);}else{inh.appendChild(badge);}
-  }
   if(!s.live){L.actief=null; L.host.stuurVraag({id:null,geen:true,open:false}); return;}
   var q=L.v[i]||(L.v[i]={open:true,antw:{},pas:{},tel:{}}); q.open=true; L.actief=i;
   sendQ(i);
@@ -517,13 +520,17 @@ function ga(i){
   var inh=mk("div","slide-inhoud"); slide.appendChild(inh);
   var heeftTimer=(s.t!=="titel"&&s.t!=="einde")&&(slideMin(s)>0);
   var timer=null;
+  var zij=null;
   if(heeftTimer){
-    slide.classList.add("heeft-timer");
     timer=maakTimer(s.t==="tweetal"?s.fases[0].min:slideMin(s)); st.timer=timer;
-    var zij=mk("div","slide-zij"); zij.appendChild(timer.el);
+    zij=mk("div","slide-zij"); zij.appendChild(timer.el);
     zij.appendChild(mk("p","small","Totaal voor dit onderdeel: "+slideMin(s)+" min"));
-    slide.appendChild(zij);
   }
+  if(st.live&&st.live.aan&&s.live){
+    if(!zij)zij=mk("div","slide-zij");
+    zij.appendChild(telBlok(s));
+  }
+  if(zij){slide.classList.add("heeft-timer"); slide.appendChild(zij);}
   slide.classList.add("t-"+s.t);
   BOUW[s.t](s,inh,timer);
   liveSlide(s,i,inh);

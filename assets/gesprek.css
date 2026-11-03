@@ -155,3 +155,11 @@
 .tel-ico{width:1.1em;height:1.1em;flex:none;vertical-align:-.2em}
 .slide .tel-badge{display:inline-flex;gap:.4em;align-items:center;background:var(--yellow);border:.1em solid var(--ink);border-radius:1em;padding:.1em .7em;font-size:.65em;font-weight:800;margin:.1em 0 .5em}
 .live-kop strong{display:inline-flex;align-items:center;gap:.3em}
+
+/* Groot telefoonblok onder de timer */
+.tel-groot{background:var(--yellow);border:.1em solid var(--ink);border-radius:.7em;padding:.5em .6em;text-align:center;margin-top:.8em;box-shadow:.18em .18em 0 var(--ink)}
+.tel-groot .tel-ico{display:block;margin:0 auto;width:3.4em;height:3.4em;vertical-align:baseline;transform-origin:50% 90%;animation:tel-wiebel 2.6s ease-in-out infinite}
+.tel-kop{font-size:1.05em;font-weight:800;margin:.1em 0 0;line-height:1.1}
+.tel-sub{font-size:.62em;font-weight:600;margin:.25em 0 0;line-height:1.2}
+@keyframes tel-wiebel{0%,68%,100%{transform:rotate(0)}74%{transform:rotate(-9deg)}80%{transform:rotate(9deg)}86%{transform:rotate(-6deg)}92%{transform:rotate(4deg)}}
+@media (prefers-reduced-motion:reduce){.tel-groot .tel-ico{animation:none}}
