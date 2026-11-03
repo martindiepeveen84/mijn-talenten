@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; script-src 'self'; img-src 'self' data: blob:; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Jouw uitslag – Mijn talenten</title>
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-page="uitslag">
+<a class="skip" href="#main">Naar de inhoud</a>
+<header class="site-header"><div class="wrap bar">
+  <a class="brand" href="index.html">Mijn talenten</a>
+  <nav aria-label="Hoofdmenu">
+    <a href="index.html" data-page="home">Home</a>
+    <a href="uitleg.html" data-page="uitleg">Uitleg</a>
+    <a href="gesprek.html" data-page="gesprek">Teamgesprek</a>
+  </nav>
+  <a class="btn btn-small" href="test.html">Opnieuw doen</a>
+</div></header>
+
+<main id="main">
+<noscript><div class="wrap narrow section"><div class="note">Voor de uitslag is JavaScript nodig. Zet JavaScript aan en laad de pagina opnieuw.</div></div></noscript>
+
+<section id="leeg" class="wrap narrow empty hide">
+  <h1>Hier staat nog geen uitslag</h1>
+  <p>Doe eerst de test. Dat duurt ongeveer 5 minuten.</p>
+  <div class="btn-row"><a class="btn" href="test.html">Start de test</a></div>
+</section>
+
+<div id="inhoud" class="hide">
+<section class="page-head">
+  <div class="wrap">
+    <h1>Jouw talentenprofiel <span id="printNaam"></span></h1>
+    <p>Hieronder zie je waar jij staat op vijf kenmerken. Een score links of rechts is niet beter of slechter. Het laat zien wat je <em>meestal</em> doet.</p>
+    <p class="small">Deze pagina bewaart niets. Je uitslag zit in het adres van de pagina. Bewaar de link of download je uitslag hieronder.</p>
+  </div>
+</section>
+
+<div class="wrap">
+  <section class="section">
+    <div class="results-top">
+      <div class="card"><svg class="radar" id="radar"></svg></div>
+      <div>
+        <h2>Wat valt het meest op?</h2>
+        <div class="chips" id="chips"></div>
+        <p>Dit zijn de kenmerken waar je het verst van het midden zit. Lees hieronder bij elk kenmerk wat dat betekent.</p>
+        <div id="meldingen"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Jouw vijf kenmerken</h2>
+    <div id="kenmerken"></div>
+  </section>
+
+  <section class="share" aria-labelledby="deelKop">
+    <h2 id="deelKop">Bewaar of deel je uitslag</h2>
+    <label for="naam">Naam (mag leeg)</label>
+    <input type="text" id="naam" autocomplete="off">
+    <p class="small">Je naam komt alleen in je eigen bestand. Hij wordt nergens opgeslagen en zit niet in de link.</p>
+    <div class="btn-grid">
+      <button class="btn" id="pdfKnop" type="button">Download als PDF</button>
+      <button class="btn" id="wordKnop" type="button">Download als Word-bestand</button>
+      <button class="btn" id="pngKnop" type="button">Download als afbeelding</button>
+      <button class="btn btn-white" id="printKnop" type="button">Print de resultaten</button>
+      <button class="btn btn-white" id="mailKnop" type="button">Mail naar mezelf</button>
+      <button class="btn btn-white" id="linkKnop" type="button">Kopieer link</button>
+    </div>
+    <p class="msg" id="melding" aria-live="polite"></p>
+    <p class="small">In de link zitten alleen je vijf scores. Iedereen met de link ziet je uitslag. Deel hem alleen met mensen die je dat gunt.</p>
+  </section>
+
+  <section class="section no-print">
+    <h2>Hoe lees je je uitslag?</h2>
+    <div class="grid g2">
+      <div class="card"><h3>Er is geen beste uitslag</h3><p>Elke kant heeft een sterke kant en een valkuil.</p></div>
+      <div class="card"><h3>Het is jouw eigen kijk</h3><p>Je vult in hoe jij jezelf ziet. Collega's zien je soms anders. Dat is een goed gesprek waard.</p></div>
+      <div class="card"><h3>Het is een momentopname</h3><p>Je humeur of je werkweek kleurt je antwoorden iets. Je kunt de test later opnieuw doen.</p></div>
+      <div class="card"><h3>Lager, midden en hoger</h3><p>Dit gaat over je score op een schaal van 1 tot 5. We vergelijken je niet met andere mensen.</p></div>
+    </div>
+    <div class="note"><strong>Niet gebruiken</strong> om te kiezen wie een baan of promotie krijgt. Daarvoor is deze test niet gemaakt.</div>
+    <div class="btn-row">
+      <a class="btn" href="gesprek.html">Bereid een teamgesprek voor</a>
+      <a class="btn btn-white" href="uitleg.html">Lees meer over de test</a>
+    </div>
+  </section>
+</div>
+</div>
+</main>
+
+<footer class="site-footer"><div class="wrap foot-grid">
+  <div><h2>Mijn talenten</h2><p>Een korte talententest voor teamgesprekken. Gebaseerd op het Big Five-model.</p></div>
+  <div><h2>Pagina's</h2><ul><li><a href="test.html">Opnieuw doen</a></li><li><a href="uitleg.html">Uitleg</a></li><li><a href="gesprek.html">Teamgesprek</a></li></ul></div>
+  <div><h2>Let op</h2><p>Deze pagina bewaart niets en stuurt niets door. Niet geschikt voor selectie of beoordeling.</p></div>
+</div></footer>
+<script src="assets/data.js"></script>
+<script src="assets/common.js"></script>
+<script src="assets/pdf.js"></script>
+<script src="assets/uitslag.js"></script>
+</body>
+</html>
