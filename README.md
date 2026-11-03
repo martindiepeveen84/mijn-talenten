@@ -9,8 +9,8 @@ Korte talententest (30 stellingen, ongeveer 5 minuten) voor teamgesprekken, geba
 | `test.html` | De vragenlijst, één stelling per scherm |
 | `uitslag.html` | Uitslag met spinnenweb, uitleg per kenmerk, Word/afbeelding/print/mail/link |
 | `kwadrant.html` | Kernkwadranten (naar Daniel Ofman): kies 3 kwaliteiten, vul valkuil, uitdaging en allergie in met suggesties, exporteer |
-| `uitleg.html` | Het Big Five-model, hoe de test is gemaakt, beperkingen, privacy, bronnen |
-| `gesprek.html` | Stappenplan voor een teamgesprek van 45 minuten met gespreksvragen |
+| `uitleg.html` | Het Big Five-model, de kernkwadranten, beperkingen, privacy, hoe de site is gemaakt, bronnen |
+| `gesprek.html` | Teamgesprek in drie vormen: talentengesprek (45 min), kwadrantengesprek (45 min) en gecombineerd (75 min), met spelregels, gespreksvragen en tips |
 | `assets/` | `style.css`, `data.js` (stellingen en teksten), `kwadrant-data.js` (40 kwaliteiten met suggesties), `kwadrant.js`, `common.js`, `pdf.js` (eigen PDF-schrijver), `test.js`, `uitslag.js`, `uitleg.js`, `gesprek.js`, `favicon.svg` |
 
 ## Op GitHub zetten

@@ -15,72 +15,127 @@
   <a class="brand" href="index.html">Mijn talenten</a>
   <nav aria-label="Hoofdmenu">
     <a href="index.html" data-page="home">Home</a>
+    <a href="test.html" data-page="test">Talententest</a>
     <a href="kwadrant.html" data-page="kwadrant">Kernkwadranten</a>
-    <a href="uitleg.html" data-page="uitleg">Uitleg</a>
     <a href="gesprek.html" data-page="gesprek">Teamgesprek</a>
+    <a href="uitleg.html" data-page="uitleg">Uitleg</a>
   </nav>
-  <a class="btn btn-small" href="test.html">Start de test</a>
 </div></header>
 
 <main id="main">
 <section class="page-head">
   <div class="wrap">
-    <h1>Teamgesprek over talenten</h1>
-    <p>Een stappenplan voor een gesprek van 45 minuten. Iedereen deed eerst zelf de test. Niemand hoeft zijn uitslag te laten zien.</p>
-    <div class="btn-row no-print"><button class="btn" id="printKnop" type="button">Print dit stappenplan</button></div>
+    <h1>Teamgesprek</h1>
+    <p>Je team deed de talententest, maakte kernkwadranten, of allebei. Kies hieronder het gesprek dat past. Niemand hoeft zijn uitslag te laten zien.</p>
+    <ul class="toc">
+      <li><a href="#kies">Kies je gesprek</a></li>
+      <li><a href="#spelregels">Spelregels</a></li>
+      <li><a href="#talenten">Talentengesprek</a></li>
+      <li><a href="#kwadranten">Kwadrantengesprek</a></li>
+      <li><a href="#combi">Gecombineerd</a></li>
+      <li><a href="#tips">Tips</a></li>
+    </ul>
+    <div class="btn-row no-print"><button class="btn" id="printKnop" type="button">Print deze pagina</button></div>
   </div>
 </section>
 
-<div class="wrap narrow prose">
-  <h2>Spelregels</h2>
-  <div class="note">
+<div class="wrap">
+  <section class="section" id="kies">
+    <h2>Kies je gesprek</h2>
+    <p class="sub">Alle drie werken met hetzelfde idee: eerst alleen kijken, dan in tweetallen, dan met het hele team.</p>
+    <div class="grid g3">
+      <div class="card"><span class="time">45 min</span><h3>Talentengesprek</h3><p>Voor teams die de <a href="test.html">talententest</a> deden. Het gaat over hoe jullie graag werken en hoe jullie elkaar aanvullen.</p><p><a href="#talenten">Naar het stappenplan</a></p></div>
+      <div class="card"><span class="time">45 min</span><h3>Kwadrantengesprek</h3><p>Voor teams die <a href="kwadrant.html">kernkwadranten</a> maakten. Het gaat over kwaliteiten, valkuilen en wat je irriteert.</p><p><a href="#kwadranten">Naar het stappenplan</a></p></div>
+      <div class="card"><span class="time">75 min</span><h3>Gecombineerd gesprek</h3><p>Voor teams die beide deden. Je legt je talenten naast je kwadranten. Dat geeft het diepste gesprek.</p><p><a href="#combi">Naar het stappenplan</a></p></div>
+    </div>
+  </section>
+
+  <section class="section prose narrow" id="spelregels">
+    <h2>Spelregels</h2>
+    <div class="note">
+      <ul>
+        <li><strong>Delen is vrijwillig.</strong> Niemand moet zijn uitslag laten zien of vertellen.</li>
+        <li><strong>Geen oordeel.</strong> Er is geen beste uitslag. Elke kant heeft een talent.</li>
+        <li><strong>Het is een start.</strong> Een uitslag is je eigen kijk. Een collega ziet je misschien anders.</li>
+        <li><strong>Praat over gedrag, niet over mensen.</strong> Zeg: "Ik word onrustig als er niet wordt gekozen." Niet: "Jij kunt nooit kiezen."</li>
+        <li><strong>Geen namen.</strong> Zeker niet bij je allergie.</li>
+        <li><strong>Wat hier gezegd wordt, blijft hier.</strong></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section prose narrow" id="talenten">
+    <h2>Talentengesprek <span class="time">45 min</span></h2>
+    <p>Iedereen heeft zijn talentenprofiel bij zich. Bijvoorbeeld op de telefoon of uitgeprint.</p>
+    <ol class="steps">
+      <li><h3>Welkom en spelregels <span class="time">5 min</span></h3><p>Lees de spelregels hardop voor. Vraag of iedereen akkoord is. Laat weten dat niemand iets hoeft te delen.</p></li>
+      <li><h3>Eerst alleen <span class="time">5 min</span></h3><p>Iedereen kijkt naar zijn eigen uitslag. Schrijf op: Wat herken ik? Wat verrast me? Wat klopt niet?</p></li>
+      <li><h3>In tweetallen <span class="time">10 min</span></h3><p>Praat met één collega. Je deelt alleen wat je wilt. Kies één kenmerk uit de vragen hieronder. Beide mensen krijgen even lang.</p></li>
+      <li><h3>Met het hele team <span class="time">15 min</span></h3><p>Elke persoon vertelt één ding: "Hier ben ik goed in" of "Hier heb ik jullie voor nodig." Vraag daarna: Hoe kunnen we elkaars verschillen gebruiken?</p></li>
+      <li><h3>Afspraken <span class="time">10 min</span></h3><p>Kies één of twee afspraken voor de komende weken. Bijvoorbeeld: "Wie het liefst rustig nadenkt, krijgt de vergaderstukken van tevoren." Schrijf de afspraken op.</p></li>
+    </ol>
+    <h3>Gespreksvragen per kenmerk</h3>
+    <p>Kies per gesprek één of twee kenmerken. Niet alles tegelijk.</p>
+    <div id="vragenLijst" class="grid g2"></div>
+    <noscript><p>Zet JavaScript aan om de vragen te zien.</p></noscript>
+  </section>
+
+  <section class="section prose narrow" id="kwadranten">
+    <h2>Kwadrantengesprek <span class="time">45 min</span></h2>
+    <p>Iedereen heeft zijn drie kernkwadranten bij zich. Het gesprek draait om één idee: <strong>wat jou irriteert, is vaak een kwaliteit van een ander.</strong></p>
+    <ol class="steps">
+      <li><h3>Welkom en spelregels <span class="time">5 min</span></h3><p>Lees de spelregels voor. Zeg erbij dat het over gedrag gaat en dat niemand namen noemt. Dat is bij dit gesprek extra belangrijk.</p></li>
+      <li><h3>Eerst alleen <span class="time">5 min</span></h3><p>Kies één kwadrant uit je drie. Schrijf op: Wanneer zag ik mijn valkuil de laatste keer? Wat gebeurde er?</p></li>
+      <li><h3>Mijn allergie, jouw kwaliteit <span class="time">15 min</span></h3><p>Praat in tweetallen. Persoon A vertelt over één kwadrant, vooral over de allergie. Persoon B zoekt: <em>welke kwaliteit zit hierachter?</em> Bijvoorbeeld: iemand die snel kiest, ergert zich aan twijfelaars. Maar twijfelen kan ook zorgvuldigheid zijn. Wissel daarna.</p></li>
+      <li><h3>Met het hele team <span class="time">10 min</span></h3><p>Iedereen noemt één kwaliteit en één valkuil. Het team vraagt: "Hoe merken we dat je doorslaat?" Schrijf de antwoorden op.</p></li>
+      <li><h3>Afspraken <span class="time">10 min</span></h3><p>Elke persoon kiest één afspraak: "Als ik doorsla, mag je dit tegen mij zeggen: …" Of: "Dit kun je van me vragen als het misgaat: …" Schrijf ze op.</p></li>
+    </ol>
+    <h3>Vragen voor het kwadrantengesprek</h3>
+    <div class="card qcard"><ul id="kwVragen"></ul></div>
+    <div class="note blue"><strong>Let op:</strong> noemt iemand een collega bij naam bij de allergie? Breng het terug naar gedrag: "Wat doet iemand dan precies?"</div>
+  </section>
+
+  <section class="section prose narrow" id="combi">
+    <h2>Gecombineerd gesprek <span class="time">75 min</span></h2>
+    <p>Je legt je talentenprofiel en je kernkwadranten naast elkaar. Past een valkuil bij een kenmerk uit je profiel? Bijvoorbeeld: je scoort hoog op "Plannen en afmaken" en je valkuil is "te strak". Dat is een mooi gesprek.</p>
+    <ol class="steps">
+      <li><h3>Welkom en spelregels <span class="time">5 min</span></h3><p>Lees de spelregels voor. Vraag of iedereen akkoord is.</p></li>
+      <li><h3>Eerst alleen <span class="time">10 min</span></h3><p>Leg je talentenprofiel en je kwadranten naast elkaar. Schrijf op: Wat past bij elkaar? Wat verrast me?</p></li>
+      <li><h3>In tweetallen: talenten <span class="time">10 min</span></h3><p>Kies één kenmerk uit het talentengesprek. Deel alleen wat je wilt.</p></li>
+      <li><h3>In tweetallen: mijn allergie, jouw kwaliteit <span class="time">15 min</span></h3><p>Werk zoals bij het kwadrantengesprek. Zoek de kwaliteit achter wat je irriteert.</p></li>
+      <li><h3>Met het hele team <span class="time">20 min</span></h3><p>Iedereen noemt één talent en één valkuil. Vraag: Hoe vullen we elkaar aan? Hoe merken we dat iemand doorslaat?</p></li>
+      <li><h3>Afspraken <span class="time">15 min</span></h3><p>Schrijf een paar afspraken op voor de komende weken. Bijvoorbeeld voor vergaderingen, feedback en verdeling van taken.</p></li>
+    </ol>
+  </section>
+
+  <section class="section prose narrow" id="tips">
+    <h2>Tips voor een leidinggevende</h2>
     <ul>
-      <li><strong>Delen is vrijwillig.</strong> Niemand moet zijn uitslag laten zien of vertellen.</li>
-      <li><strong>Geen oordeel.</strong> Er is geen beste uitslag. Elke kant heeft een talent.</li>
-      <li><strong>Het is een start.</strong> De uitslag is een eigen kijk. Een collega ziet je misschien anders.</li>
-      <li><strong>Wat hier gezegd wordt, blijft hier.</strong></li>
+      <li><strong>Vraag niet om de uitslagen.</strong> Vraag wat mensen willen delen.</li>
+      <li><strong>Deel als eerste iets van jezelf.</strong> Dat maakt het veilig voor anderen. Kies iets waarover je je rustig voelt.</li>
+      <li><strong>Gebruik de uitslagen nooit bij beoordeling, werving of promotie.</strong></li>
+      <li><strong>Maak het klein.</strong> Eén afspraak die werkt is meer waard dan tien plannen.</li>
+      <li><strong>Plan het gesprek op een rustig moment.</strong> Niet vlak voor een deadline.</li>
     </ul>
-  </div>
-
-  <h2>Het stappenplan</h2>
-  <ol class="steps">
-    <li><h3>Welkom en spelregels <span class="time">5 min</span></h3><p>Lees de spelregels hardop voor. Vraag of iedereen akkoord is. Laat weten dat niemand iets hoeft te delen.</p></li>
-    <li><h3>Eerst alleen <span class="time">5 min</span></h3><p>Iedereen kijkt naar zijn eigen uitslag. Schrijf op: Wat herken ik? Wat verrast me? Wat klopt niet?</p></li>
-    <li><h3>In tweetallen <span class="time">10 min</span></h3><p>Praat met één collega. Je deelt alleen wat je wilt. Kies één kenmerk uit de vragen hieronder. Beide mensen krijgen even lang.</p></li>
-    <li><h3>Met het hele team <span class="time">15 min</span></h3><p>Elke persoon vertelt één ding: "Hier ben ik goed in" of "Hier heb ik jullie voor nodig." Gebruik de vraag: Hoe kunnen we elkaars verschillen gebruiken?</p></li>
-    <li><h3>Afspraken <span class="time">10 min</span></h3><p>Kies één of twee afspraken voor de komende weken. Bijvoorbeeld: "Wie het liefst rustig nadenkt, krijgt de vergaderstukken van tevoren." Schrijf de afspraken op.</p></li>
-  </ol>
-
-  <h2>Gespreksvragen per kenmerk</h2>
-  <p>Kies per gesprek één of twee kenmerken. Niet alles tegelijk.</p>
-  <div id="vragenLijst" class="grid g2"></div>
-  <noscript><p>Zet JavaScript aan om de vragen te zien.</p></noscript>
-
-  <h2>Tips voor een leidinggevende</h2>
-  <ul>
-    <li><strong>Vraag niet om de uitslagen.</strong> Vraag wat mensen willen delen.</li>
-    <li><strong>Deel als eerste iets van jezelf.</strong> Dat maakt het veilig voor anderen. Kies iets waarover je je rustig voelt.</li>
-    <li><strong>Gebruik de uitslag nooit bij beoordeling, werving of promotie.</strong></li>
-    <li><strong>Praat over gedrag, niet over mensen.</strong> Zeg: "Ik merk dat ik graag plan." Niet: "Jij bent chaotisch."</li>
-    <li><strong>Maak het klein.</strong> Eén afspraak die werkt is meer waard dan tien plannen.</li>
-  </ul>
-
-  <h2>Als het lastig wordt</h2>
-  <ul>
-    <li><strong>Iemand herkent zijn uitslag niet.</strong> Prima. Vraag: "Wat klopt wel, en wat niet?"</li>
-    <li><strong>Iemand wil niets delen.</strong> Dat mag. Laat die persoon luisteren of op een andere manier meedoen.</li>
-    <li><strong>Er ontstaat een etiket.</strong> Hoor je "Jij bent zo'n type"? Breng het terug naar: "Wat heb jij nodig?"</li>
-  </ul>
-  <div class="btn-row no-print"><a class="btn" href="test.html">Doe zelf de test</a><a class="btn btn-white" href="uitleg.html">Lees de uitleg</a></div>
+    <h2>Als het lastig wordt</h2>
+    <ul>
+      <li><strong>Iemand herkent zijn uitslag niet.</strong> Prima. Vraag: "Wat klopt wel, en wat niet?"</li>
+      <li><strong>Iemand wil niets delen.</strong> Dat mag. Laat die persoon luisteren of op een andere manier meedoen.</li>
+      <li><strong>Er ontstaat een etiket.</strong> Hoor je "Jij bent zo'n type"? Breng het terug naar: "Wat heb jij nodig?"</li>
+      <li><strong>Een allergie wordt een verwijt.</strong> Stop even. Zeg: "We praten over gedrag, niet over een persoon." Vraag dan: "Welke kwaliteit zit hierachter?"</li>
+    </ul>
+    <div class="btn-row no-print"><a class="btn" href="test.html">Doe de talententest</a><a class="btn btn-white" href="kwadrant.html">Maak je kernkwadranten</a><a class="btn btn-white" href="uitleg.html">Lees de uitleg</a></div>
+  </section>
 </div>
 </main>
 
 <footer class="site-footer"><div class="wrap foot-grid">
   <div><h2>Mijn talenten</h2><p>Een korte talententest voor teamgesprekken. Gebaseerd op het Big Five-model.</p></div>
-  <div><h2>Pagina's</h2><ul><li><a href="test.html">Start de test</a></li><li><a href="kwadrant.html">Kernkwadranten</a></li><li><a href="uitleg.html">Uitleg</a></li><li><a href="gesprek.html">Teamgesprek</a></li></ul></div>
+  <div><h2>Pagina's</h2><ul><li><a href="test.html">Talententest</a></li><li><a href="kwadrant.html">Kernkwadranten</a></li><li><a href="gesprek.html">Teamgesprek</a></li><li><a href="uitleg.html">Uitleg</a></li></ul></div>
   <div><h2>Let op</h2><p>Deze pagina bewaart niets en stuurt niets door. Niet geschikt voor selectie of beoordeling.</p><p>Gemaakt met Claude (Anthropic) en gecheckt door een mens. <a href="uitleg.html#gemaaktmet">Lees meer</a></p></div>
 </div></footer>
 <script src="assets/data.js"></script>
+<script src="assets/kwadrant-data.js"></script>
 <script src="assets/common.js"></script>
 <script src="assets/gesprek.js"></script>
 </body>

@@ -9,5 +9,7 @@ T.VOLGORDE.forEach(function(d){
   var ul=mk("ul"); info.vragen.forEach(function(q){ul.appendChild(mk("li",null,q));});
   kaart.appendChild(ul); wrap.appendChild(kaart);
 });
+var kv=document.getElementById("kwVragen");
+window.KWADRANT.GESPREKSVRAGEN.forEach(function(q){kv.appendChild(mk("li",null,q));});
 document.getElementById("printKnop").addEventListener("click",function(){window.print();});
 })();
